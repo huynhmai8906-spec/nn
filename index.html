@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi" class="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoCare - An tâm chăm sóc, kết nối tức thì | Hệ Thống Y Khoa & Viện Dưỡng Lão Chuẩn Quốc Tế</title>
+  <meta name="description" content="Hệ Thống Y Khoa & Viện Dưỡng Lão Chuẩn Quốc Tế với bản đồ GPS Dijkstra/A*, cổng bệnh nhân EHR và hệ sinh thái chăm sóc y tế 5 sao.">
+  <meta property="og:title" content="GoCare - An tâm chăm sóc, kết nối tức thì | Hệ Thống Y Khoa & Viện Dưỡng Lão Chuẩn Quốc Tế">
+  <meta property="og:description" content="Hệ Thống Y Khoa & Viện Dưỡng Lão Chuẩn Quốc Tế với bản đồ GPS Dijkstra/A*, cổng bệnh nhân EHR và hệ sinh thái chăm sóc y tế 5 sao.">
+  
+  <script>
+    // Iframe-safe alert polyfill for smooth, non-blocking toast notifications
+    window.alert = function(msg) {
+      console.log('[GoCare Notification]', msg);
+      let container = document.getElementById('gocare-toast-container');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'gocare-toast-container';
+        container.className = 'fixed top-5 right-5 z-[999999] flex flex-col gap-3 max-w-md pointer-events-none';
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.className = 'pointer-events-auto bg-[#482816] text-[#fff8f5] border-2 border-[#C5A059] shadow-2xl rounded-2xl p-4 flex items-start gap-3 transition-all duration-300 transform translate-y-[-10px] opacity-0';
+      toast.innerHTML = `
+        <span class="material-symbols-outlined text-[#C5A059] text-2xl flex-shrink-0">notifications_active</span>
+        <div class="flex-1 text-sm font-medium leading-relaxed whitespace-pre-line">${String(msg).replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        <button class="text-white/60 hover:text-white p-1" onclick="this.parentElement.remove()">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      `;
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+      });
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-[-10px]');
+        setTimeout(() => toast.remove(), 300);
+      }, 5000);
+    };
+  </script>
+  
+  <!-- Critical Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Fonts: Be Vietnam Pro (Purpose-built for Vietnamese typography), Playfair Display & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS for Interactive GPS Map -->
+  <link rel="stylesheet" href="assets/vendor/leaflet.css" onerror="this.onerror=null;this.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';" />
+
+  <!-- Google Identity Services (Sign In with Google Real Flow) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#482816",
+            "primary-container": "#623e2a",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#edb7a8",
+            "secondary": "#a04100",
+            "secondary-container": "#ff8340",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#682800",
+            "secondary-fixed": "#f2e0c9",
+            "on-secondary-fixed": "#231a0c",
+            "secondary-fixed-dim": "#d6c4ae",
+            "tertiary": "#2c3139",
+            "tertiary-container": "#424750",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#dee2ed",
+            "tertiary-fixed-dim": "#c2c6d1",
+            "gold-accent": "#C5A059",
+            "gold-light": "#f6f0e4",
+            "surface": "#fff8f5",
+            "surface-dim": "#e1d8d3",
+            "surface-bright": "#fff8f5",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#fbf2ed",
+            "surface-container": "#f5ece7",
+            "surface-container-high": "#efe7e1",
+            "surface-container-highest": "#e9e1dc",
+            "on-surface": "#1e1b18",
+            "on-surface-variant": "#514440",
+            "outline": "#83746f",
+            "outline-variant": "#d5c3bd",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "brand-charcoal": "#241D17"
+          },
+          fontFamily: { serif: ["'Times New Roman'", "Times", "serif"], sans: ["'Times New Roman'", "Times", "serif"], times: ["'Times New Roman'", "Times", "serif"] },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            md: "0.375rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            full: "9999px"
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    /* === YÊU CẦU: FONT CHỮ TIMES NEW ROMAN TOÀN DIỆN === */
+    * {
+      font-family: "Times New Roman", Times, "Merriweather", serif !important;
+    }
+    body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, label, div, .font-serif, .font-times {
+      font-family: "Times New Roman", Times, "Merriweather", serif !important;
+    }
+
+    /* === YÊU CẦU: CHỈNH SỬA FORM CHỮ CANH GIỮA === */
+    form, .gocare-form, [role="dialog"] form, .modal-form {
+      text-align: center !important;
+    }
+    form input, form select, form textarea,
+    input[type="text"], input[type="tel"], input[type="email"], input[type="date"], select, textarea {
+      text-align: center !important;
+      text-align-last: center !important;
+    }
+    form input::placeholder, form textarea::placeholder {
+      text-align: center !important;
+    }
+    form label, .form-label {
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    form .flex, form .grid {
+      justify-content: center !important;
+      text-align: center !important;
+    }
+    form button, form button[type="submit"] {
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: center !important;
+    }
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior: none;
+      background-color: #fff8f5;
+      color: #1e1b18;
+    }
+    h1, h2, h3, .font-serif {
+      font-family: 'Merriweather', Georgia, serif;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f5ece7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d5c3bd;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C5A059;
+    }
+
+    /* ENHANCED ANIMATIONS & HARDWARE ACCELERATION */
+    @keyframes soundWave {
+      0% { height: 6px; }
+      50% { height: 26px; }
+      100% { height: 10px; }
+    }
+    .wave-bar {
+      animation: soundWave 1.2s ease-in-out infinite alternate;
+      will-change: height;
+      transform: translateZ(0);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(197, 160, 89, 0.25), inset 0 0 10px rgba(197, 160, 89, 0.08);
+      }
+      50% {
+        box-shadow: 0 0 24px rgba(197, 160, 89, 0.55), inset 0 0 20px rgba(197, 160, 89, 0.18);
+      }
+    }
+    .pulse-glow {
+      animation: pulseGlow 2.5s infinite ease-in-out;
+      transform: translateZ(0);
+    }
+
+    @keyframes heartWarningPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6);
+        border-color: #dc2626;
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+        border-color: #ef4444;
+      }
+    }
+    .heart-warning-pulse {
+      animation: heartWarningPulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes radarRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .radar-beam {
+      animation: radarRotate 4s linear infinite;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    @keyframes dashPolyline {
+      to {
+        stroke-dashoffset: -40;
+      }
+    }
+    .leaflet-path-animated {
+      stroke-dasharray: 8, 8;
+      animation: dashPolyline 1.5s linear infinite;
+    }
+
+    @keyframes ecgBeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.12); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.18); }
+      70% { transform: scale(1); }
+    }
+    .ecg-heart {
+      animation: ecgBeat 1.4s ease-in-out infinite;
+      transform-origin: center;
+      will-change: transform;
+    }
+
+    .gold-glow-card {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+      will-change: transform, box-shadow;
+    }
+    .gold-glow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 28px -6px rgba(197, 160, 89, 0.25), 0 8px 16px -4px rgba(98, 62, 42, 0.12);
+      border-color: #C5A059;
+    }
+
+    /* Modal Fade & Smooth Elastic Entrance */
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      letter-spacing: -0.012em;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .modal-animated {
+      animation: modalIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: transform, opacity;
+    }
+    .smooth-transition {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+
+  <!-- High Performance Local Vendor Dependencies (with instant execution) -->
+  <script src="assets/vendor/react.production.min.js"></script>
+  <script src="assets/vendor/react-dom.production.min.js"></script>
+  <script src="assets/vendor/history.production.min.js"></script>
+  <script src="assets/vendor/react-router.production.min.js"></script>
+  <script src="assets/vendor/react-router-dom.production.min.js"></script>
+  <script src="assets/vendor/d3.min.js"></script>
+  <script src="assets/vendor/leaflet.js"></script>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+  <div id="root">
+    <!-- Instant Branded Preloader: Prevents blank screen while React hydrates -->
+    <div id="gocare-initial-loader" class="min-h-screen flex flex-col items-center justify-center bg-[#fff8f5] text-center p-6 select-none">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-[#482816] via-[#623e2a] to-[#a04100] text-white flex items-center justify-center font-serif font-bold text-3xl shadow-xl ring-2 ring-[#C5A059]/50 mb-6 animate-pulse">
+        G
+      </div>
+      <div class="font-serif text-2xl sm:text-3xl font-extrabold text-[#482816] tracking-tight mb-2">
+        GoCare
+      </div>
+      <div class="text-sm font-semibold text-[#a04100] tracking-wide mb-8">
+        An tâm chăm sóc, kết nối tức thì
+      </div>
+      <div class="flex items-center gap-2 mb-4">
+        <span class="w-3 h-3 rounded-full bg-[#C5A059] animate-bounce" style="animation-delay: 0s;"></span>
+        <span class="w-3 h-3 rounded-full bg-[#a04100] animate-bounce" style="animation-delay: 0.15s;"></span>
+        <span class="w-3 h-3 rounded-full bg-[#482816] animate-bounce" style="animation-delay: 0.3s;"></span>
+      </div>
+      <p class="text-xs font-medium text-[#514440]/80">
+        Đang khởi tạo hệ sinh thái y tế chuẩn quốc tế 5 sao...
+      </p>
+    </div>
+  </div>
+
+  <!-- Runtime Error Guard with User Friendly Recovery -->
+  <script>
+    window.addEventListener("error", function(e) {
+      console.error("[GoCare Exception Caught]", e.message, e.filename, e.lineno);
+      var loader = document.getElementById("gocare-initial-loader");
+      if (loader && !document.querySelector("header")) {
+        loader.innerHTML = `
+          <div style="max-width: 440px; margin: auto; padding: 24px; background: white; border-radius: 16px; border: 2px solid #C5A059; box-shadow: 0 10px 30px rgba(72,40,22,0.15); text-align: center;">
+            <div style="font-size: 36px; margin-bottom: 8px;">🏥</div>
+            <h3 style="font-family: Merriweather, Georgia, serif; font-size: 18px; font-weight: bold; color: #482816; margin-bottom: 8px;">Khởi động GoCare</h3>
+            <p style="font-size: 13px; color: #514440; margin-bottom: 16px; line-height: 1.5;">Hệ thống đang tải dữ liệu. Nhấn nút bên dưới để làm mới trang nếu quá trình mất nhiều hơn vài giây.</p>
+            <button onclick="window.location.reload()" style="background: #482816; color: white; border: none; border-radius: 9999px; padding: 10px 24px; font-weight: 600; font-size: 13px; cursor: pointer;">
+              Tải lại trang (Reload)
+            </button>
+          </div>
+        `;
+      }
+    });
+  </script>
+
+  <!-- Pre-compiled Native GoCare Bundle (Instant, zero runtime transpilation) -->
+  <script src="app.js"></script>
+</body>
+</html>
