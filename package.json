@@ -10,6 +10,8 @@
     "lint": "node -e 'console.log(\"Lint check passed\")'"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "bcryptjs": "^3.0.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.3"
   }
 }
