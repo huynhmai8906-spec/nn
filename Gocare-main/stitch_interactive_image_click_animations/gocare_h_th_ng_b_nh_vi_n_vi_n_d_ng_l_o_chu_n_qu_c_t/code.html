@@ -1,0 +1,1798 @@
+﻿<!DOCTYPE html>
+<html lang="vi" class="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoCare | Há»‡ Thá»‘ng Bá»‡nh Viá»‡n & Viá»‡n DÆ°á»¡ng LÃ£o Chuáº©n Quá»‘c Táº¿</title>
+  
+  <!-- Critical Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#482816",
+            "primary-container": "#623e2a",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#edb7a8",
+            "secondary": "#a04100",
+            "secondary-container": "#ff8340",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#682800",
+            "secondary-fixed": "#f2e0c9",
+            "on-secondary-fixed": "#231a0c",
+            "secondary-fixed-dim": "#d6c4ae",
+            "tertiary": "#2c3139",
+            "tertiary-container": "#424750",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#dee2ed",
+            "tertiary-fixed-dim": "#c2c6d1",
+            "gold-accent": "#C5A059",
+            "gold-light": "#f6f0e4",
+            "surface": "#fff8f5",
+            "surface-dim": "#e1d8d3",
+            "surface-bright": "#fff8f5",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#fbf2ed",
+            "surface-container": "#f5ece7",
+            "surface-container-high": "#efe7e1",
+            "surface-container-highest": "#e9e1dc",
+            "on-surface": "#1e1b18",
+            "on-surface-variant": "#514440",
+            "outline": "#83746f",
+            "outline-variant": "#d5c3bd",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "brand-charcoal": "#241D17"
+          },
+          fontFamily: {
+            serif: ["Playfair Display", "Georgia", "serif"],
+            sans: ["Plus Jakarta Sans", "Be Vietnam Pro", "sans-serif"]
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            md: "0.375rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            full: "9999px"
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior: none;
+    }
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    @keyframes soundWave {
+      0% { height: 4px; }
+      100% { height: 26px; }
+    }
+    .wave-bar {
+      animation: soundWave 1.2s ease-in-out infinite alternate;
+    }
+    .gold-glow-card {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gold-glow-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -8px rgba(197, 160, 89, 0.22), 0 10px 20px -5px rgba(98, 62, 42, 0.12);
+    }
+  </style>
+
+  <!-- React & Router dependencies v6.3.0 -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+  <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+  <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    const { createRoot } = ReactDOM;
+    const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+    // --- REUSABLE NAVIGATION HEADER ---
+    function Header() {
+      const location = useLocation();
+      const [lang, setLang] = useState('VN');
+
+      const navLinks = [
+        { path: '/', label: 'Trang chá»§' },
+        { path: '/chuyen-khoa', label: 'ChuyÃªn khoa & BÃ¡c sÄ©', badge: 'HOT' },
+        { path: '/dieu-duong', label: 'Äiá»u DÆ°á»¡ng & CCHN' },
+        { path: '/wellness', label: 'Wellness & NhÃ  thuá»‘c' },
+        { path: '/cong-benh-nhan', label: 'Cá»•ng bá»‡nh nhÃ¢n' }
+      ];
+
+      return (
+        <header className="fixed top-0 left-0 right-0 z-50 bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_1px_8px_rgba(98,62,42,0.06)]">
+          <div className="h-20 max-w-[1400px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
+            <Link to="/" className="flex items-center gap-2.5 group">
+              <span className="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-serif font-bold text-xl shadow-sm">
+                G
+              </span>
+              <div className="flex flex-col text-left">
+                <span className="font-serif text-primary font-bold tracking-tight text-lg leading-tight">GOCARE</span>
+                <span className="text-[10px] text-on-surface-variant tracking-wider uppercase font-semibold">Viá»‡n DÆ°á»¡ng LÃ£o & Y Khoa</span>
+              </div>
+            </Link>
+
+            <nav className="hidden xl:flex items-center gap-6">
+              {navLinks.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`relative py-2 text-sm font-semibold tracking-wide transition-colors flex items-center gap-1.5 ${
+                      isActive ? 'text-primary after:content-[\'\'] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-primary-container' : 'text-on-surface-variant hover:text-primary'
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <div className="hidden sm:flex items-center rounded-full bg-surface-container p-1 border border-outline-variant/30 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setLang('VN')}
+                  className={`px-2.5 py-0.5 rounded-full transition-colors ${lang === 'VN' ? 'bg-primary-container text-on-primary shadow-sm' : 'text-on-surface-variant'}`}
+                >
+                  VN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang('EN')}
+                  className={`px-2.5 py-0.5 rounded-full transition-colors ${lang === 'EN' ? 'bg-primary-container text-on-primary shadow-sm' : 'text-on-surface-variant'}`}
+                >
+                  EN
+                </button>
+              </div>
+
+              <a href="tel:19006868" className="hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-primary border border-primary-container hover:bg-surface-container transition-colors shadow-sm">
+                <span className="material-symbols-outlined text-lg text-primary animate-pulse">call</span>
+                <div className="flex flex-col text-left">
+                  <span className="text-[9px] uppercase font-bold text-secondary">Hotline 24/7</span>
+                  <span className="text-xs font-bold leading-tight">1900 6868</span>
+                </div>
+              </a>
+
+              <Link
+                to="/chuyen-khoa"
+                className="inline-flex items-center justify-center h-10 px-4 rounded-full bg-primary-container text-on-primary hover:bg-primary text-xs font-bold tracking-wider uppercase transition-all shadow-md gap-1.5"
+              >
+                <span className="material-symbols-outlined text-base">calendar_month</span>
+                <span>Äáº¶T Lá»ŠCH KHÃM</span>
+              </Link>
+            </div>
+          </div>
+        </header>
+      );
+    }
+
+    // --- REUSABLE FOOTER ---
+    function Footer() {
+      return (
+        <footer className="w-full bg-tertiary text-on-tertiary pt-16 pb-12 shadow-[0_-4px_24px_rgba(0,0,0,0.03)] border-t border-outline-variant/30">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12">
+              <div className="lg:col-span-4 space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-serif font-bold text-xl shadow-sm">G</span>
+                  <div className="flex flex-col">
+                    <span className="font-serif text-xl font-bold tracking-tight text-surface">GOCARE</span>
+                    <span className="text-xs text-secondary-fixed font-medium tracking-wide">Viá»‡n DÆ°á»¡ng LÃ£o & Y Khoa</span>
+                  </div>
+                </div>
+                <p className="text-sm text-tertiary-fixed-dim leading-relaxed max-w-sm">
+                  Dá»‹ch Vá»¥ ChÄƒm SÃ³c & Bá»‡nh Viá»‡n GoCare - An tÃ¢m chÄƒm sÃ³c, káº¿t ná»‘i tá»©c thÃ¬. Há»‡ sinh thÃ¡i chÄƒm sÃ³c sá»©c khá»e chá»§ Ä‘á»™ng vÃ  Ä‘iá»u dÆ°á»¡ng cao cáº¥p cho má»i gia Ä‘Ã¬nh.
+                </p>
+                <div className="flex flex-col gap-1 text-tertiary-fixed-dim text-xs">
+                  <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm text-secondary-fixed">verified_user</span> Huy hiá»‡u Chuáº©n JCI Quá»‘c Táº¿</span>
+                  <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm text-secondary-fixed">health_and_safety</span> Giáº¥y phÃ©p hoáº¡t Ä‘á»™ng BYT sá»‘: 08842/BYT-GPHD</span>
+                </div>
+              </div>
+
+              <div className="lg:col-span-3 space-y-3">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-surface border-b border-tertiary-container pb-2">Há»‡ Thá»‘ng CÆ¡ Sá»Ÿ</h4>
+                <ul className="space-y-2 text-xs text-tertiary-fixed-dim">
+                  <li><p className="text-surface font-semibold">Heritage Villa SÃ i GÃ²n</p><p>Khu Ä‘Ã´ thá»‹ Sala, TP. Thá»§ Äá»©c, TP. HCM</p></li>
+                  <li><p className="text-surface font-semibold">Wellness Sanctuary ÄÃ  Láº¡t</p><p>Äá»“i thÃ´ng Tráº§n HÆ°ng Äáº¡o, P. 10, ÄÃ  Láº¡t</p></li>
+                  <li><p className="text-surface font-semibold">Há»“ GÆ°Æ¡m Premier Suites</p><p>Q. HoÃ n Kiáº¿m, TP. HÃ  Ná»™i</p></li>
+                </ul>
+              </div>
+
+              <div className="lg:col-span-2 space-y-3">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-surface border-b border-tertiary-container pb-2">LiÃªn Káº¿t Nhanh</h4>
+                <ul className="space-y-2 text-xs text-tertiary-fixed-dim">
+                  <li><Link to="/chuyen-khoa" className="hover:text-surface">Há»™i Ä‘á»“ng bÃ¡c sÄ©</Link></li>
+                  <li><Link to="/dieu-duong" className="hover:text-surface">Äá»™i ngÅ© Ä‘iá»u dÆ°á»¡ng CCHN</Link></li>
+                  <li><Link to="/wellness" className="hover:text-surface">NhÃ  thuá»‘c & Tiá»‡n Ã­ch</Link></li>
+                  <li><Link to="/cong-benh-nhan" className="hover:text-surface">Há»“ sÆ¡ bá»‡nh Ã¡n Ä‘iá»‡n tá»­</Link></li>
+                </ul>
+              </div>
+
+              <div className="lg:col-span-3 space-y-3">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-surface border-b border-tertiary-container pb-2">Cáº¥p Cá»©u 24/7</h4>
+                <div className="p-3 rounded-xl bg-tertiary-container flex items-center gap-3">
+                  <span className="material-symbols-outlined text-secondary-fixed text-2xl">e911_emergency</span>
+                  <div>
+                    <div className="text-xs text-tertiary-fixed">Tá»•ng Ä‘Ã i y táº¿ kháº©n</div>
+                    <div className="text-lg font-bold text-surface">1900 6868</div>
+                  </div>
+                </div>
+                <p className="text-xs text-tertiary-fixed-dim">Báº£o máº­t bá»‡nh Ã¡n Ä‘iá»‡n tá»­ EHR theo chuáº©n HIPAA & HL7 quá»‘c táº¿.</p>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-tertiary-container flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-tertiary-fixed-dim">
+              <p>Â© 2025 GOCARE. ToÃ n bá»™ báº£n quyá»n Ä‘Æ°á»£c báº£o há»™.</p>
+              <div className="flex items-center gap-4">
+                <span>ChÃ­nh sÃ¡ch báº£o máº­t EHR</span>
+                <span>Quy cháº¿ hoáº¡t Ä‘á»™ng chuyÃªn mÃ´n</span>
+                <span>Äiá»u khoáº£n dá»‹ch vá»¥</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    // --- SCREEN 1: TRANG CHá»¦ (Home Screen) ---
+    function HomeScreen() {
+      const [bookingTab, setBookingTab] = useState('home');
+      const [bookingSubmitted, setBookingSubmitted] = useState(false);
+      const [formData, setFormData] = useState({
+        service: 'Phá»¥c há»“i chá»©c nÄƒng & Váº­t lÃ½ trá»‹ liá»‡u',
+        shift: 'Ca 8 Tiáº¿ng TiÃªu Chuáº©n',
+        name: '',
+        phone: '',
+        location: 'hcm-thuduc',
+        address: 'Sá»‘ 12 Ä‘Æ°á»ng Mai ChÃ­ Thá»...',
+        date: '2025-04-15',
+        note: ''
+      });
+
+      const handleFormSubmit = (e) => {
+        e.preventDefault();
+        setBookingSubmitted(true);
+      };
+
+      return (
+        <div className="w-full pt-20 bg-surface">
+          {/* Hero Section */}
+          <section className="relative w-full -mt-20 overflow-hidden bg-tertiary">
+            <div className="absolute inset-0 z-0">
+              <img
+                alt="Sanctuary"
+                className="w-full h-full object-cover object-center opacity-40 scale-105"
+                src="../assets/images/img_11_a07ecdce.jpg"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-tertiary/95 via-tertiary/75 to-tertiary/50" />
+            </div>
+
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 pt-36 pb-20 lg:pt-44 lg:pb-24 min-h-[901px] flex flex-col justify-between">
+              <div className="max-w-3xl space-y-6">
+                <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface/10 backdrop-blur-md text-surface shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-secondary-fixed animate-ping" />
+                  <span className="text-xs uppercase tracking-widest text-surface font-semibold">GoCare â€¢ An tÃ¢m chÄƒm sÃ³c, káº¿t ná»‘i tá»©c thÃ¬</span>
+                </div>
+
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-surface font-bold leading-tight">
+                  NÆ¡i Tuá»•i Xáº¿ Chiá»u LÃ  Má»™t <span className="text-secondary-fixed italic">Miá»n An TrÃº</span> TÆ°Æ¡i SÃ¡ng & NhÃ¢n VÄƒn
+                </h1>
+
+                <p className="text-lg text-tertiary-fixed max-w-2xl leading-relaxed">
+                  Káº¿t há»£p giá»¯a chuáº©n má»±c y khoa Ä‘iá»u dÆ°á»¡ng kháº¯t khe vÃ  sá»± nÃ¢ng niu tÃ¢m há»“n trá»n váº¹n tá»«ng khoáº£nh kháº¯c, kiáº¿n táº¡o khÃ´ng gian sá»‘ng tá»± tÃ´n vÃ  tÄ©nh táº¡i cho báº­c sinh thÃ nh.
+                </p>
+
+                <div className="pt-2 flex flex-wrap items-center gap-4">
+                  <Link
+                    to="/chuyen-khoa"
+                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg bg-primary-container text-on-primary font-semibold shadow-xl hover:bg-primary transition-all group"
+                  >
+                    <span>KhÃ¡m phÃ¡ ChuyÃªn khoa & Dá»‹ch vá»¥</span>
+                    <span className="material-symbols-outlined ml-2 text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </Link>
+
+                  <a
+                    href="#bang-gia-dich-vu"
+                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg bg-surface/15 backdrop-blur-md text-surface font-semibold hover:bg-surface/25 transition-all"
+                  >
+                    <span className="material-symbols-outlined mr-2 text-secondary-fixed text-lg">payments</span>
+                    <span>Báº£ng GiÃ¡ Ná»™i TrÃº & BÃ¡n TrÃº</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Metrics */}
+              <div className="pt-10">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 max-w-4xl p-5 rounded-2xl bg-tertiary/80 backdrop-blur-xl border border-white/10 shadow-2xl">
+                  <div className="flex items-center gap-4 px-2">
+                    <div className="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-secondary-fixed">
+                      <span className="material-symbols-outlined text-2xl">verified_user</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-serif text-surface font-bold">24/7</div>
+                      <div className="text-xs text-tertiary-fixed-dim">BÃ¡c sÄ© LÃ£o khoa tÃºc trá»±c</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 px-2">
+                    <div className="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-secondary-fixed">
+                      <span className="material-symbols-outlined text-2xl">workspace_premium</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-serif text-surface font-bold">100%</div>
+                      <div className="text-xs text-tertiary-fixed-dim">Chá»©ng chá»‰ Quá»‘c gia & JCI</div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4 px-2">
+                    <div className="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-secondary-fixed">
+                      <span className="material-symbols-outlined text-2xl">family_restroom</span>
+                    </div>
+                    <div>
+                      <div className="text-2xl font-serif text-surface font-bold">500+</div>
+                      <div className="text-xs text-tertiary-fixed-dim">Gia Ä‘Ã¬nh tÃ­n nhiá»‡m trá»n Ä‘á»i</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Quick Doctor Highlights */}
+          <section className="w-full py-16 bg-surface">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-12">
+              <div className="p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm space-y-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant/30 pb-4">
+                  <div>
+                    <div className="inline-flex items-center gap-2 mb-1.5">
+                      <span className="w-2 h-2 rounded-full bg-primary-container animate-pulse" />
+                      <span className="text-xs font-bold uppercase text-secondary tracking-wider">Äá»™i NgÅ© Y Khoa ThÆ°á»ng Trá»±c</span>
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold text-primary">Há»™i Äá»“ng BÃ¡c SÄ© ChuyÃªn Khoa & Äiá»u DÆ°á»¡ng</h3>
+                    <p className="text-sm text-on-surface-variant mt-1">CÃ¡c chuyÃªn gia LÃ£o khoa hÃ ng Ä‘áº§u tá»« Bá»‡nh viá»‡n Äáº¡i há»c Y DÆ°á»£c, Chá»£ Ráº«y vÃ  chuyÃªn gia Phá»¥c há»“i Chá»©c nÄƒng quá»‘c táº¿.</p>
+                  </div>
+                  <Link
+                    to="/chuyen-khoa"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container hover:bg-primary text-on-primary text-xs font-semibold shadow-md transition-all self-start md:self-auto"
+                  >
+                    <span className="material-symbols-outlined text-base">clinical_notes</span>
+                    <span>Äáº·t Lá»‹ch KhÃ¡m ChuyÃªn Khoa</span>
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-surface-container-low">
+                    <img
+                      src="../assets/images/img_12_2fcdabc9.jpg"
+                      alt="PGS. TS. BS Nguyá»…n VÄƒn Vinh"
+                      className="w-12 h-12 rounded-xl object-cover shadow-sm"
+                    />
+                    <div>
+                      <div className="font-bold text-sm text-on-surface">PGS. TS. BS Nguyá»…n VÄƒn Vinh</div>
+                      <p className="text-xs font-semibold text-primary">Cá»‘ Váº¥n LÃ£o Khoa & Tim Máº¡ch</p>
+                      <p className="text-[11px] text-on-surface-variant">35+ nÄƒm kinh nghiá»‡m BV Chá»£ Ráº«y</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-surface-container-low">
+                    <img
+                      src="../assets/images/img_13_d6db4165.jpg"
+                      alt="BS. CKI Tráº§n Trá»ng Khang"
+                      className="w-12 h-12 rounded-xl object-cover shadow-sm"
+                    />
+                    <div>
+                      <div className="font-bold text-sm text-on-surface">BS. CKI Tráº§n Trá»ng Khang</div>
+                      <p className="text-xs font-semibold text-primary">TrÆ°á»Ÿng Khoa Phá»¥c Há»“i Tháº§n Kinh</p>
+                      <p className="text-[11px] text-on-surface-variant">Chá»©ng chá»‰ ChuyÃªn gia JCI Hoa Ká»³</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-surface-container-low">
+                    <img
+                      src="../assets/images/img_14_dea204ad.jpg"
+                      alt="ThS. ÄD Äá»— Thu HÃ "
+                      className="w-12 h-12 rounded-xl object-cover shadow-sm"
+                    />
+                    <div>
+                      <div className="font-bold text-sm text-on-surface">ThS. ÄD Äá»— Thu HÃ </div>
+                      <p className="text-xs font-semibold text-primary">GiÃ¡m Äá»‘c Khá»‘i Äiá»u DÆ°á»¡ng</p>
+                      <p className="text-[11px] text-on-surface-variant">20+ nÄƒm Ä‘iá»u hÃ nh chÄƒm sÃ³c y táº¿</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bento Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 items-stretch">
+                <article className="lg:col-span-7 rounded-2xl bg-surface-container-lowest overflow-hidden shadow-md flex flex-col justify-between border border-outline-variant/30">
+                  <div className="relative h-72 sm:h-80 overflow-hidden">
+                    <img
+                      alt="Suite ThÆ°á»£ng Háº¡ng"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      src="../assets/images/img_15_0c3da3c4.jpg"
+                    />
+                    <div className="absolute top-4 left-4 bg-tertiary/80 backdrop-blur-md px-3 py-1.5 rounded-full text-surface text-xs font-semibold flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm text-secondary-fixed">hotel</span>
+                      <span>Suite ThÆ°á»£ng Háº¡ng</span>
+                    </div>
+                  </div>
+                  <div className="p-6 space-y-3">
+                    <h3 className="font-serif text-2xl font-bold text-primary">PhÃ²ng LÆ°u TrÃº DÆ°á»¡ng LÃ£o Tá»•ng Thá»‘ng</h3>
+                    <p className="text-sm text-on-surface-variant leading-relaxed">
+                      Trang bá»‹ giÆ°á»ng y táº¿ Ä‘a chiá»u cÃ´ng thÃ¡i há»c giáº¥u cÆ¡ khÃ­, ban cÃ´ng panorama trá»±c diá»‡n vÆ°á»n tháº£o má»™c, sÃ n chá»‘ng trÆ°á»£t cao cáº¥p cÃ¹ng há»‡ thá»‘ng gá»i y tÃ¡ khÃ´ng cháº¡m báº±ng giá»ng nÃ³i.
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      <span className="px-3 py-1 rounded-md bg-surface-container text-xs text-on-surface-variant font-medium">Lá»c khÃ­ HEPA H14</span>
+                      <span className="px-3 py-1 rounded-md bg-surface-container text-xs text-on-surface-variant font-medium">Ãnh sÃ¡ng nhá»‹p sinh há»c</span>
+                    </div>
+                  </div>
+                </article>
+
+                <article className="lg:col-span-5 rounded-2xl bg-surface-container-lowest overflow-hidden shadow-md flex flex-col justify-between border border-outline-variant/30">
+                  <div className="relative h-72 sm:h-80 overflow-hidden">
+                    <img
+                      alt="Trung TÃ¢m Phá»¥c Há»“i Tháº§n Kinh"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      src="../assets/images/img_16_841aec66.jpg"
+                    />
+                    <div className="absolute top-4 left-4 bg-tertiary/80 backdrop-blur-md px-3 py-1.5 rounded-full text-surface text-xs font-semibold flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm text-secondary-fixed">nordic_walking</span>
+                      <span>Trá»‹ Liá»‡u Váº­n Äá»™ng</span>
+                    </div>
+                  </div>
+                  <div className="p-6 space-y-3">
+                    <h3 className="font-serif text-2xl font-bold text-primary">Trung TÃ¢m Phá»¥c Há»“i Tháº§n Kinh & Váº­n Äá»™ng</h3>
+                    <p className="text-sm text-on-surface-variant leading-relaxed">
+                      PhÃ²ng táº­p ngáº­p trÃ n Ã¡nh náº¯ng tá»± nhiÃªn vá»›i há»‡ thá»‘ng thanh song song thÄƒng báº±ng, mÃ¡y trá»£ lá»±c chi dÆ°á»›i vÃ  chuyÃªn gia váº­t lÃ½ trá»‹ liá»‡u 1:1.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          {/* Pricing Section */}
+          <section className="w-full py-16 bg-surface-container-low" id="bang-gia-dich-vu">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-12">
+              <div className="text-center max-w-2xl mx-auto space-y-3">
+                <span className="text-xs uppercase font-bold tracking-widest text-secondary">Chi PhÃ­ Trá»n GÃ³i Y Khoa</span>
+                <h2 className="font-serif text-3xl font-bold text-primary">Báº£ng GiÃ¡ Dá»‹ch Vá»¥ LÆ°u TrÃº DÆ°á»¡ng LÃ£o Minh Báº¡ch</h2>
+                <p className="text-sm text-on-surface-variant">CÃ¡c gÃ³i dá»‹ch vá»¥ y táº¿ káº¿t há»£p dÆ°á»¡ng lÃ£o Ä‘áº¡t chuáº©n quá»‘c táº¿, cÃ´ng khai chi phÃ­, linh hoáº¡t theo tá»«ng gia Ä‘Ã¬nh.</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Plan 1 */}
+                <div className="rounded-3xl bg-surface-container-lowest p-8 shadow-md border border-outline-variant/30 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <span className="px-3 py-1 rounded-full bg-surface-container text-xs font-bold text-secondary uppercase">Linh Hoáº¡t Trong NgÃ y</span>
+                    <h3 className="font-serif text-xl font-bold text-on-surface">Ngoáº¡i TrÃº & BÃ¡n TrÃº</h3>
+                    <div className="p-4 rounded-2xl bg-surface-container-low">
+                      <div className="text-2xl font-bold text-primary">450.000Ä‘ <span className="text-xs font-normal text-on-surface-variant">/ ngÃ y</span></div>
+                      <div className="text-xs font-semibold text-secondary">hoáº·c 9.800.000Ä‘ / thÃ¡ng</div>
+                    </div>
+                    <ul className="space-y-2.5 text-xs text-on-surface">
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> Xe shuttle Ä‘Ã³n & tráº£ táº¡i nhÃ </li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> 3 bá»¯a thá»±c dÆ°á»¡ng chá»‰ sá»‘ Ä‘Æ°á»ng huyáº¿t an toÃ n</li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> BÃ¡c sÄ© Ä‘o sinh hiá»‡u vÃ  phÃ¡t thuá»‘c má»—i ngÃ y</li>
+                    </ul>
+                  </div>
+                  <div className="pt-6">
+                    <a href="#dat-lich-nhanh" className="w-full inline-flex items-center justify-center h-11 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs uppercase tracking-wider">
+                      ÄÄƒng KÃ½ BÃ¡n TrÃº
+                    </a>
+                  </div>
+                </div>
+
+                {/* Plan 2 */}
+                <div className="rounded-3xl bg-surface-container-lowest p-8 shadow-xl border-2 border-primary-container flex flex-col justify-between relative">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-container text-on-primary px-3.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider">
+                    ÄÆ°á»£c Chá»n Nhiá»u Nháº¥t
+                  </div>
+                  <div className="space-y-4 pt-2">
+                    <span className="px-3 py-1 rounded-full bg-secondary-fixed text-xs font-bold text-on-secondary-fixed uppercase">Ná»™i TrÃº DÃ i Háº¡n</span>
+                    <h3 className="font-serif text-xl font-bold text-on-surface">Ná»™i TrÃº TiÃªu Chuáº©n</h3>
+                    <div className="p-4 rounded-2xl bg-secondary-container/30">
+                      <div className="text-2xl font-bold text-primary">18.000.000Ä‘ <span className="text-xs font-normal text-on-surface-variant">/ thÃ¡ng</span></div>
+                      <div className="text-xs font-semibold text-primary">Chiáº¿t kháº¥u Ä‘áº¿n 18% khi Ä‘Ã³ng 6 - 12 thÃ¡ng</div>
+                    </div>
+                    <ul className="space-y-2.5 text-xs text-on-surface">
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> PhÃ²ng Ä‘Ã´i cÃ´ng thÃ¡i há»c, giÃ n gá»i y tÃ¡ 24/7</li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> BÃ¡c sÄ© LÃ£o khoa thÄƒm khÃ¡m Ä‘á»‹nh ká»³</li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-primary text-base">check_circle</span> Váº­t lÃ½ trá»‹ liá»‡u tuáº§n 3 buá»•i</li>
+                    </ul>
+                  </div>
+                  <div className="pt-6">
+                    <a href="#dat-lich-nhanh" className="w-full inline-flex items-center justify-center h-11 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-bold text-xs uppercase tracking-wider shadow-md">
+                      Chá»n GÃ³i TiÃªu Chuáº©n
+                    </a>
+                  </div>
+                </div>
+
+                {/* Plan 3 */}
+                <div className="rounded-3xl bg-tertiary text-on-tertiary p-8 shadow-xl flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <span className="px-3 py-1 rounded-full bg-tertiary-container text-xs font-bold text-secondary-fixed uppercase">ChÄƒm SÃ³c Äáº·c Quyá»n</span>
+                    <h3 className="font-serif text-xl font-bold text-surface">Ná»™i TrÃº VIP Boutique Suite</h3>
+                    <div className="p-4 rounded-2xl bg-tertiary-container">
+                      <div className="text-2xl font-bold text-secondary-fixed">32.000.000Ä‘ <span className="text-xs font-normal text-tertiary-fixed-dim">/ thÃ¡ng</span></div>
+                      <div className="text-xs font-semibold text-secondary-fixed">Äiá»u dÆ°á»¡ng chuyÃªn trÃ¡ch 1:1 riÃªng biá»‡t</div>
+                    </div>
+                    <ul className="space-y-2.5 text-xs text-surface">
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-secondary-fixed text-base">check_circle</span> Äiá»u dÆ°á»¡ng viÃªn riÃªng tÃºc trá»±c 24/7</li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-secondary-fixed text-base">check_circle</span> Xe Ä‘Æ°a Ä‘Ã³n chuyÃªn dá»¥ng VIP</li>
+                      <li className="flex items-center gap-2"><span className="material-symbols-outlined text-secondary-fixed text-base">check_circle</span> PhÃ²ng khÃ¡ch riÃªng cho gia Ä‘Ã¬nh ngá»§ láº¡i</li>
+                    </ul>
+                  </div>
+                  <div className="pt-6">
+                    <a href="#dat-lich-nhanh" className="w-full inline-flex items-center justify-center h-11 rounded-lg bg-secondary-fixed hover:bg-secondary-fixed-dim text-on-secondary-fixed font-bold text-xs uppercase tracking-wider shadow-md">
+                      Äáº·t PhÃ²ng VIP Ngay
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Interactive Booking Gateway */}
+          <section className="w-full py-16 bg-surface" id="dat-lich-nhanh">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <div className="rounded-3xl bg-surface-container-lowest p-6 sm:p-10 shadow-xl border border-outline-variant/30 space-y-8">
+                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-outline-variant/30">
+                  <div>
+                    <span className="text-xs font-bold uppercase text-secondary tracking-wider">Cá»•ng Y Táº¿ Trá»±c Tuyáº¿n 24/7</span>
+                    <h2 className="font-serif text-3xl font-bold text-primary mt-1">Äáº·t Lá»‹ch Äiá»u DÆ°á»¡ng & Y TÃ¡ ChuyÃªn Khoa</h2>
+                    <p className="text-sm text-on-surface-variant mt-1">Há»‡ thá»‘ng Ä‘iá»u phá»‘i Ä‘iá»u dÆ°á»¡ng viÃªn chÃ­nh quy cÃ³ Chá»©ng chá»‰ HÃ nh nghá» (CCHN), tÃºc trá»±c táº­n tÃ¢m.</p>
+                  </div>
+
+                  <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-surface-container">
+                    <button
+                      type="button"
+                      onClick={() => setBookingTab('home')}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        bookingTab === 'home' ? 'bg-primary-container text-on-primary shadow-sm' : 'text-on-surface-variant'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-base">home_health</span>
+                      <span>Táº¡i NhÃ  (Home Care)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingTab('clinic')}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                        bookingTab === 'clinic' ? 'bg-primary-container text-on-primary shadow-sm' : 'text-on-surface-variant'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-base">local_hospital</span>
+                      <span>Táº¡i Viá»‡n / BÃ¡n TrÃº</span>
+                    </button>
+                  </div>
+                </div>
+
+                <form onSubmit={handleFormSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  <div className="lg:col-span-8 space-y-6">
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold text-on-surface">1. Chá»n ChuyÃªn Khoa LÃ¢m SÃ ng</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[
+                          'Phá»¥c há»“i chá»©c nÄƒng & Váº­t lÃ½ trá»‹ liá»‡u',
+                          'Thay bÄƒng & ChÄƒm sÃ³c váº¿t má»• vÃ´ khuáº©n',
+                          'ChÄƒm sÃ³c Sa sÃºt trÃ­ tuá»‡ (Memory Care)',
+                          'Theo dÃµi bá»‡nh máº¡n tÃ­nh chuyÃªn sÃ¢u'
+                        ].map((srv) => (
+                          <div
+                            key={srv}
+                            onClick={() => setFormData({ ...formData, service: srv })}
+                            className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                              formData.service === srv
+                                ? 'border-primary-container bg-surface-container-low ring-1 ring-primary-container'
+                                : 'border-outline-variant/40 hover:border-primary-container'
+                            }`}
+                          >
+                            <div className="text-xs font-bold text-primary">{srv}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold text-on-surface">2. Chá»n Ca Trá»±c</label>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {[
+                          { title: 'Ca 4 Tiáº¿ng', fee: '350.000Ä‘' },
+                          { title: 'Ca 8 Tiáº¿ng TiÃªu Chuáº©n', fee: '650.000Ä‘' },
+                          { title: 'Ca ÄÃªm 12 Tiáº¿ng', fee: '890.000Ä‘' },
+                          { title: 'Ná»™i TrÃº 24/24', fee: '1.450.000Ä‘' }
+                        ].map((sh) => (
+                          <div
+                            key={sh.title}
+                            onClick={() => setFormData({ ...formData, shift: sh.title })}
+                            className={`p-3 rounded-xl border text-center cursor-pointer transition-all ${
+                              formData.shift === sh.title
+                                ? 'border-primary-container bg-secondary-container/30 ring-1 ring-primary-container'
+                                : 'border-outline-variant/40 hover:border-primary-container'
+                            }`}
+                          >
+                            <div className="text-xs font-bold text-primary">{sh.title}</div>
+                            <div className="text-xs text-secondary font-semibold mt-1">{sh.fee}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-sm font-bold text-on-surface">3. ThÃ´ng Tin LiÃªn Há»‡</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="Há» tÃªn ngÆ°á»i liÃªn há»‡"
+                          className="h-11 px-3.5 rounded-xl border border-outline-variant/40 text-sm focus:ring-1 focus:ring-primary-container"
+                        />
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          placeholder="Sá»‘ Ä‘iá»‡n thoáº¡i"
+                          className="h-11 px-3.5 rounded-xl border border-outline-variant/40 text-sm focus:ring-1 focus:ring-primary-container"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="lg:col-span-4 space-y-4">
+                    <div className="p-5 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-4">
+                      <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+                        <span className="font-bold text-primary text-sm">TÃ³m Táº¯t Lá»‹ch Háº¹n</span>
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed">Chuáº©n JCI</span>
+                      </div>
+                      <div className="text-xs space-y-2 text-on-surface">
+                        <div className="flex justify-between"><span className="text-on-surface-variant">HÃ¬nh thá»©c:</span><span className="font-semibold">{bookingTab === 'home' ? 'Táº¡i NhÃ ' : 'Táº¡i Viá»‡n'}</span></div>
+                        <div className="flex justify-between"><span className="text-on-surface-variant">ChuyÃªn khoa:</span><span className="font-semibold truncate max-w-[160px]">{formData.service}</span></div>
+                        <div className="flex justify-between"><span className="text-on-surface-variant">Khung ca:</span><span className="font-semibold">{formData.shift}</span></div>
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full h-11 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2"
+                      >
+                        <span className="material-symbols-outlined text-lg">calendar_month</span>
+                        <span>XÃ¡c Nháº­n Äáº·t Lá»‹ch</span>
+                      </button>
+                    </div>
+
+                    {bookingSubmitted && (
+                      <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center gap-2">
+                        <span className="material-symbols-outlined text-emerald-600">check_circle</span>
+                        <span>ÄÃ£ tiáº¿p nháº­n yÃªu cáº§u! ChuyÃªn viÃªn GoCare sáº½ liÃªn há»‡ xÃ¡c nháº­n trong vÃ²ng 15 phÃºt.</span>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    // --- SCREEN 2: CHUYÃŠN KHOA & BÃC SÄ¨ (Screen 2 with AI Chat Modal & Sound Therapy) ---
+    function DoctorsScreen() {
+      const [filter, setFilter] = useState('all');
+      const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+      const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+      const [selectedDoctorReviews, setSelectedDoctorReviews] = useState([]);
+      const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+      const [currentTrack, setCurrentTrack] = useState({
+        title: 'Suá»‘i Thiá»n TÄ©nh TÃ¢m - An Giáº¥c ÄÃªm',
+        freq: '432 Hz â€¢ SÃ³ng Alpha',
+        sub: 'Táº§n sá»‘ 432Hz Ä‘iá»u hÃ²a nhá»‹p tim'
+      });
+      const [chatMessages, setChatMessages] = useState([
+        { sender: 'ai', text: 'KÃ­nh chÃ o QuÃ½ thÃ¢n chá»§, tÃ´i lÃ  Trá»£ lÃ½ TÃ¢m LÃ½ TrÃ­ Tuá»‡ NhÃ¢n Táº¡o cá»§a GoCare. Báº¡n Ä‘ang gáº·p pháº£i Ã¡p lá»±c, máº¥t ngá»§, hay muá»‘n giáº£i tá»a cáº£m xÃºc hÃ´m nay? Má»i chia sáº» á»Ÿ Ä‘Ã¢y Ä‘á»u Ä‘Æ°á»£c mÃ£ hÃ³a tuyá»‡t Ä‘á»‘i.' }
+      ]);
+      const [inputMsg, setInputMsg] = useState('');
+
+      const doctors = [
+        {
+          id: 'thanh',
+          name: 'PGS.TS.BSCKII Nguyá»…n Äá»©c ThÃ nh',
+          role: 'TrÆ°á»Ÿng khoa Tim Máº¡ch & LÃ£o Khoa Phá»¥c Há»“i',
+          category: 'cardio',
+          hosp: 'BV Chá»£ Ráº«y, ÄH Y DÆ°á»£c TP.HCM â€¢ 26 nÄƒm kinh nghiá»‡m',
+          desc: 'ChuyÃªn sÃ¢u Ä‘iá»u trá»‹ cao huyáº¿t Ã¡p khÃ¡ng trá»‹, suy tim sung huyáº¿t, phÃ²ng ngá»«a biáº¿n cá»‘ tim máº¡ch vÃ  xÆ¡ vá»¯a máº¡ch mÃ¡u lÃ£o niÃªn.',
+          cchn: '008741/BYT-CCHN-CKII',
+          price: 'KhÃ¡m 60p: 850.000Ä‘ | VIP: 1.450.000Ä‘',
+          img: '../assets/images/img_3_75b3a950.jpg'
+        },
+        {
+          id: 'tuyet',
+          name: 'TS.BS LÃª Thá»‹ Ãnh Tuyáº¿t',
+          role: 'ChuyÃªn gia Tháº§n Kinh & Sa SÃºt TrÃ­ Tuá»‡ LÃ£o Khoa',
+          category: 'neuro',
+          hosp: 'BV Báº¡ch Mai & ÄHYD TP.HCM â€¢ 22 nÄƒm kinh nghiá»‡m',
+          desc: 'ChuyÃªn sÃ¢u Ä‘Ã¡nh giÃ¡ suy giáº£m nháº­n thá»©c nháº¹ (MCI), bá»‡nh lÃ½ Parkinson, há»™i chá»©ng Alzheimer vÃ  can thiá»‡p báº£o tá»“n trÃ­ nhá»› ngÆ°á»i cao niÃªn.',
+          cchn: '014522/BYT-CCHN',
+          price: 'KhÃ¡m 60p: 800.000Ä‘ | Trá»‹ liá»‡u: 1.200.000Ä‘',
+          img: '../assets/images/img_7_faff15d4.jpg'
+        },
+        {
+          id: 'tran',
+          name: 'ThS.BSCKII Nguyá»…n VÄƒn TrÃ¢n',
+          role: 'ChuyÃªn khoa TÃ¢m Tháº§n LÃ£o Khoa & Trá»‹ Liá»‡u TÃ¢m LÃ½',
+          category: 'psychiatry',
+          hosp: 'Viá»‡n LÃ£o Khoa Quá»‘c Gia â€¢ 25 nÄƒm kinh nghiá»‡m',
+          desc: 'NguyÃªn Cá»‘ váº¥n TÃ¢m tháº§n há»c Viá»‡n LÃ£o Khoa. Äiá»u trá»‹ chuyÃªn biá»‡t rá»‘i loáº¡n giáº¥c ngá»§ trÆ°á»ng diá»…n, Ã¢u lo tráº§m cáº£m thoÃ¡i hÃ³a vÃ  liá»‡u phÃ¡p thÆ° giÃ£n tÃ¢m thá»©c.',
+          cchn: '009234/BYT-CCHN',
+          price: 'KhÃ¡m 60p: 850.000Ä‘ | Trá»‹ liá»‡u: 1.350.000Ä‘',
+          img: '../assets/images/img_8_a7a99c2d.jpg'
+        },
+        {
+          id: 'lan',
+          name: 'ThS.BS Nguyá»…n Thu Lan',
+          role: 'ChuyÃªn gia Phá»¥c Há»“i Chá»©c NÄƒng & Dinh DÆ°á»¡ng LÃ£o Khoa',
+          category: 'rehab',
+          hosp: 'BV Äáº¡i Há»c Y DÆ°á»£c TP.HCM â€¢ 18 nÄƒm kinh nghiá»‡m',
+          desc: 'Thiáº¿t káº¿ phÃ¡c Ä‘á»“ váº­t lÃ½ trá»‹ liá»‡u sau tai biáº¿n máº¡ch mÃ¡u nÃ£o, Ä‘iá»u hÃ²a dinh dÆ°á»¡ng cÃ¡ nhÃ¢n hÃ³a cho ngÆ°á»i cao tuá»•i suy mÃ²n vÃ  teo cÆ¡.',
+          cchn: '018892/SYT-HCM-CCHN',
+          price: 'KhÃ¡m 60p: 750.000Ä‘ | Phá»¥c há»“i: 1.100.000Ä‘',
+          img: '../assets/images/img_9_0fbef6e5.jpg'
+        }
+      ];
+
+      const reviewsDict = {
+        thanh: [
+          { author: 'BÃ¡c Tráº§n HÃ¹ng (68 tuá»•i - Q.1)', comment: 'BÃ¡c sÄ© ThÃ nh khÃ¡m ká»¹ lÆ°á»¡ng, Ä‘o huyáº¿t Ã¡p 3 láº§n trong suá»‘t phiÃªn vÃ  giáº£i thÃ­ch cÆ¡ cháº¿ ráº¥t cáº·n káº½.' },
+          { author: 'Chá»‹ Mai Lan (ThÃ¢n nhÃ¢n)', comment: 'Máº¹ tÃ´i bá»‹ tim máº¡ch kÃ¨m lo Ã¢u, bÃ¡c sÄ© nÃ³i chuyá»‡n tá»« tá»‘n vÃ  chuáº©n má»±c, khÃ´ng táº¡o Ã¡p lá»±c.' }
+        ],
+        tuyet: [
+          { author: 'BÃ  Nguyá»…n Thá»‹ HÃ²a (72 tuá»•i)', comment: 'BÃ¡c sÄ© Tuyáº¿t kiá»ƒm tra trÃ­ nhá»› cho tÃ´i vá»›i bÃ i tráº¯c nghiá»‡m ráº¥t nháº¹ nhÃ ng. Giáº¥c ngá»§ Ä‘Ã£ cáº£i thiá»‡n rÃµ rá»‡t.' }
+        ],
+        tran: [
+          { author: 'BÃ¡c Äá»— VÄƒn TÃ¢m (65 tuá»•i)', comment: 'TÃ´i máº¥t ngá»§ 3 thÃ¡ng liá»n, sau 2 buá»•i trá»‹ liá»‡u vá»›i bÃ¡c sÄ© TrÃ¢n Ä‘Ã£ giáº£m háº³n cÄƒng tháº³ng.' }
+        ],
+        lan: [
+          { author: 'BÃ¡c HoÃ ng Minh (70 tuá»•i)', comment: 'BÃ¡c sÄ© Lan hÆ°á»›ng dáº«n tá»«ng bÃ i táº­p co duá»—i tay ráº¥t chu Ä‘Ã¡o, ba tÃ´i Ä‘Ã£ Ä‘i láº¡i vá»¯ng vÃ ng.' }
+        ]
+      };
+
+      const handleSendMessage = () => {
+        if (!inputMsg.trim()) return;
+        const newMsg = { sender: 'user', text: inputMsg };
+        setChatMessages((prev) => [...prev, newMsg]);
+        setInputMsg('');
+        setTimeout(() => {
+          setChatMessages((prev) => [
+            ...prev,
+            { sender: 'ai', text: 'Cáº£m Æ¡n QuÃ½ khÃ¡ch Ä‘Ã£ chia sáº» vá»›i GoCare. Triá»‡u chá»©ng nÃ y hoÃ n toÃ n cÃ³ thá»ƒ cáº£i thiá»‡n thÃ´ng qua phÃ¡c Ä‘á»“ nghá»‰ ngÆ¡i vÃ  trá»‹ liá»‡u sÃ³ng nÃ£o 432Hz. BÃ¡c sÄ© TrÆ°á»Ÿng ca Ä‘Ã£ nháº­n Ä‘Æ°á»£c tÃ³m táº¯t cá»§a báº¡n.' }
+          ]);
+        }, 700);
+      };
+
+      const filteredDoctors = filter === 'all' ? doctors : doctors.filter((d) => d.category === filter);
+
+      return (
+        <div className="w-full pt-20 bg-surface">
+          <section className="w-full py-10 bg-gradient-to-b from-surface via-surface-container-low/50 to-surface">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-6">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-outline-variant/30">
+                <div className="max-w-3xl space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed/50 text-secondary text-xs font-bold uppercase tracking-wider">
+                    <span className="material-symbols-outlined text-sm">verified</span>
+                    <span>Há»™i Äá»“ng Y Khoa Quá»‘c Táº¿ Táº¡i Viá»‡t Nam</span>
+                  </div>
+                  <h1 className="font-serif text-3xl sm:text-4xl text-primary font-bold">Há»™i Äá»“ng BÃ¡c SÄ© ChuyÃªn Khoa Cáº¥p Cao</h1>
+                  <p className="text-sm text-on-surface-variant leading-relaxed">
+                    Há»™i tá»¥ cÃ¡c chuyÃªn gia LÃ£o khoa, Tim máº¡ch vÃ  Sá»©c khá»e Tinh tháº§n tá»«ng giá»¯ trá»ng trÃ¡ch quáº£n lÃ½ vÃ  khÃ¡m chá»¯a bá»‡nh táº¡i Bá»‡nh viá»‡n Chá»£ Ráº«y, Báº¡ch Mai, Äáº¡i há»c Y DÆ°á»£c TP.HCM vÃ  Viá»‡n LÃ£o Khoa Quá»‘c Gia.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-6 bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30">
+                  <div className="text-center"><span className="text-2xl font-serif font-bold text-secondary">25+</span><span className="block text-[11px] text-outline">NÄƒm kinh nghiá»‡m TB</span></div>
+                  <div className="w-px h-8 bg-outline-variant/40" />
+                  <div className="text-center"><span className="text-2xl font-serif font-bold text-primary">100%</span><span className="block text-[11px] text-outline">CCHN Bá»™ Y Táº¿</span></div>
+                  <div className="w-px h-8 bg-outline-variant/40" />
+                  <div className="text-center"><span className="text-2xl font-serif font-bold text-tertiary">1:1</span><span className="block text-[11px] text-outline">PhiÃªn khÃ¡m riÃªng biá»‡t</span></div>
+                </div>
+              </div>
+
+              {/* Filter Buttons */}
+              <div className="flex items-center gap-3 overflow-x-auto pb-2">
+                {[
+                  { id: 'all', label: 'Táº¥t cáº£ chuyÃªn khoa' },
+                  { id: 'psychiatry', label: 'TÃ¢m Tháº§n & Trá»‹ Liá»‡u TÃ¢m LÃ½' },
+                  { id: 'cardio', label: 'Tim Máº¡ch & LÃ£o Khoa' },
+                  { id: 'neuro', label: 'Tháº§n Kinh & Sa SÃºt TrÃ­ Tuá»‡' },
+                  { id: 'rehab', label: 'Phá»¥c Há»“i Chá»©c NÄƒng' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setFilter(item.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+                      filter === item.id ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest border border-outline-variant/30 text-on-surface'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Doctor Cards */}
+          <section className="w-full pb-16 bg-surface">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {filteredDoctors.map((doc) => (
+                  <article key={doc.id} className="gold-glow-card group bg-surface-container-lowest rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm border border-outline-variant/30">
+                    <div className="p-6 flex flex-col sm:flex-row gap-6">
+                      <div className="relative w-full sm:w-44 h-56 sm:h-52 shrink-0 rounded-xl overflow-hidden bg-surface-container shadow-inner">
+                        <img alt={doc.name} src={doc.img} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                        <span className="absolute top-2 left-2 px-2 py-0.5 rounded bg-primary text-on-primary text-[10px] font-bold uppercase">BÃ¡c SÄ© Cáº¥p Cao</span>
+                      </div>
+                      <div className="flex flex-col justify-between flex-grow gap-2">
+                        <div>
+                          <div className="flex items-center justify-between gap-2 mb-1.5">
+                            <span className="text-xs font-bold text-secondary bg-secondary-fixed/40 px-2 py-0.5 rounded">Trá»±c Tuyáº¿n</span>
+                            <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">ðŸŸ¢ Sáºµn sÃ ng nháº­n ca</span>
+                          </div>
+                          <h3 className="font-serif text-lg font-bold text-primary group-hover:text-secondary transition-colors">{doc.name}</h3>
+                          <p className="text-xs font-semibold text-secondary">{doc.role}</p>
+                          <p className="text-xs text-outline mt-1">{doc.hosp}</p>
+                          <p className="text-xs text-on-surface-variant leading-relaxed mt-2 line-clamp-2">{doc.desc}</p>
+                        </div>
+                        <div className="pt-2 border-t border-outline-variant/30 text-xs">
+                          <div className="flex justify-between text-[11px]"><span className="text-outline">CCHN:</span><span className="font-mono font-semibold">{doc.cchn}</span></div>
+                          <div className="flex justify-between text-[11px] mt-1"><span className="text-outline">Biá»ƒu phÃ­:</span><span className="font-semibold text-primary">{doc.price}</span></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="px-6 py-3 bg-surface-container-low border-t border-outline-variant/30 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedDoctorReviews(reviewsDict[doc.id] || []);
+                          setIsReviewModalOpen(true);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest text-xs font-semibold border border-outline-variant/40"
+                      >
+                        <span className="text-amber-500">â­</span>
+                        <span>Xem ÄÃ¡nh GiÃ¡</span>
+                      </button>
+                      <Link
+                        to="/dieu-duong"
+                        className="inline-flex items-center gap-1 px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-sm hover:bg-primary-container"
+                      >
+                        <span className="material-symbols-outlined text-sm">calendar_today</span>
+                        <span>Äáº·t Lá»‹ch KhÃ¡m 1:1</span>
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Sound Wave Therapy & AI Assistant Promo */}
+          <section className="w-full py-16 bg-surface-container-low border-t border-outline-variant/30">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-10">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <span className="text-xs font-bold uppercase text-secondary tracking-wider">Liá»‡u PhÃ¡p Ã‚m Thanh NÃ£o Bá»™</span>
+                  <h2 className="font-serif text-3xl font-bold text-primary mt-1">ThÆ° Viá»‡n Ã‚m Nháº¡c Táº§n Sá»‘ Chá»¯a LÃ nh NÃ£o Bá»™ (432Hz & 528Hz)</h2>
+                  <p className="text-sm text-on-surface-variant mt-1 max-w-2xl">
+                    Háº¡ cortisol cÄƒng tháº³ng, kÃ­ch hoáº¡t sÃ³ng nÃ£o Alpha/Theta vÃ  Ä‘Æ°a cÆ¡ thá»ƒ vÃ o tráº¡ng thÃ¡i phá»¥c há»“i giáº¥c ngá»§ tá»± nhiÃªn.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsAiModalOpen(true)}
+                  className="px-5 py-3 rounded-xl bg-secondary text-on-secondary font-bold text-xs uppercase tracking-wider shadow-md hover:bg-secondary-container flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-lg">smart_toy</span>
+                  <span>Má»Ÿ Trá»£ LÃ½ AI Láº¯ng Nghe 24/7</span>
+                </button>
+              </div>
+
+              {/* Mini Audio Player */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                <div className="p-6 rounded-2xl bg-surface-container-lowest border border-secondary/20 shadow-sm flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-secondary uppercase flex items-center gap-1">
+                      <span className="material-symbols-outlined text-base">graphic_eq</span> Äang phÃ¡t máº«u
+                    </span>
+                    <span className="text-[11px] font-mono font-bold text-primary px-2 py-0.5 bg-surface-container rounded">{currentTrack.freq}</span>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+                      className="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center hover:scale-105 transition-all shadow-md shrink-0"
+                    >
+                      <span className="material-symbols-outlined text-2xl">{isPlayingAudio ? 'pause' : 'play_arrow'}</span>
+                    </button>
+                    <div className="overflow-hidden">
+                      <div className="font-bold text-sm text-primary truncate">{currentTrack.title}</div>
+                      <div className="text-xs text-outline">{currentTrack.sub}</div>
+                    </div>
+                  </div>
+
+                  <div className="h-8 flex items-end justify-between gap-1.5 px-3 py-1 bg-surface-container rounded-lg">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((idx) => (
+                      <span
+                        key={idx}
+                        className={`wave-bar w-1.5 bg-secondary rounded-full ${isPlayingAudio ? '' : 'h-2'}`}
+                        style={{ animationPlayState: isPlayingAudio ? 'running' : 'paused' }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { title: 'Táº§n Sá»‘ BÃ¬nh YÃªn & ThÆ° GiÃ£n SÃ¢u', freq: '432 Hz', desc: 'GiÃºp giáº£i tá»a stress cÄƒng tháº³ng tháº§n kinh, lÃ m dá»‹u tÃ¢m tráº¡ng bá»“n chá»“n.' },
+                    { title: 'Táº§n Sá»‘ Phá»¥c Há»“i Sinh Lá»±c Tháº§n Kinh', freq: '528 Hz', desc: 'Há»— trá»£ kÃ­ch thÃ­ch sá»± minh máº«n, tÃ¡i táº¡o cÃ¡c káº¿t ná»‘i tháº§n kinh á»Ÿ ngÆ°á»i lá»›n tuá»•i.' },
+                    { title: 'SÃ³ng NÃ£o Thiá»n Äá»‹nh Khá»Ÿi Táº¡o Giáº¥c Ngá»§', freq: 'Theta 6Hz', desc: 'Háº¡ dáº§n nhá»‹p tim vÃ  huyáº¿t Ã¡p, xua tan cÆ¡n khÃ³ ngá»§ tráº±n trá»c tuá»•i giÃ .' },
+                    { title: 'Tiáº¿ng á»’n Há»“ng Ru Ngá»§ Tá»± NhiÃªn', freq: 'Pink Noise', desc: 'Che cháº¯n táº¡p Ã¢m phá»‘ thá»‹, táº¡o vá» bá»c an toÃ n tuyá»‡t Ä‘á»‘i cho giáº¥c ngá»§.' }
+                  ].map((track) => (
+                    <div
+                      key={track.freq}
+                      onClick={() => {
+                        setCurrentTrack({ title: track.title, freq: track.freq, sub: track.desc });
+                        setIsPlayingAudio(true);
+                      }}
+                      className="p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-secondary transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold font-mono">{track.freq}</span>
+                        <span className="material-symbols-outlined text-base text-secondary">play_circle</span>
+                      </div>
+                      <h4 className="text-xs font-bold text-primary">{track.title}</h4>
+                      <p className="text-[11px] text-outline mt-1 leading-snug">{track.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* AI Chat Modal */}
+          {isAiModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="w-full max-w-lg bg-surface-container-lowest rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[870px]">
+                <div className="bg-surface-container p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+                      <span className="material-symbols-outlined text-base">smart_toy</span>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm text-primary">Trá»£ LÃ½ AI Trá»‹ Liá»‡u TÃ¢m LÃ½ GoCare</h4>
+                      <span className="text-[10px] text-outline">Báº£o máº­t chuáº©n HIPAA â€¢ 24/7</span>
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => setIsAiModalOpen(false)} className="text-outline hover:text-on-surface">
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 max-h-80 bg-surface">
+                  {chatMessages.map((msg, i) => (
+                    <div key={i} className={`flex items-start gap-2 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
+                      {msg.sender === 'ai' && (
+                        <div className="w-6 h-6 rounded-full bg-secondary/20 text-secondary flex items-center justify-center shrink-0 mt-1">
+                          <span className="material-symbols-outlined text-xs">psychology</span>
+                        </div>
+                      )}
+                      <div className={`p-3 rounded-xl max-w-[85%] text-xs leading-relaxed ${
+                        msg.sender === 'user' ? 'bg-primary text-on-primary' : 'bg-surface-container-lowest text-on-surface shadow-sm'
+                      }`}>
+                        {msg.text}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-3 bg-surface-container-low flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={inputMsg}
+                    onChange={(e) => setInputMsg(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Nháº­p tÃ¢m sá»± hoáº·c cÃ¢u há»i cá»§a báº¡n..."
+                    className="flex-1 px-3 py-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-xs focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSendMessage}
+                    className="w-9 h-9 rounded-lg bg-secondary text-on-secondary flex items-center justify-center shadow-sm"
+                  >
+                    <span className="material-symbols-outlined text-base">send</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Doctor Review Modal */}
+          {isReviewModalOpen && (
+            <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-2xl p-5 space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <h4 className="font-bold text-sm text-primary flex items-center gap-1.5">
+                    <span className="text-amber-500">â­</span> ÄÃ¡nh GiÃ¡ Thá»±c Táº¿ Tá»« NgÆ°á»i Bá»‡nh
+                  </h4>
+                  <button type="button" onClick={() => setIsReviewModalOpen(false)}>
+                    <span className="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  {selectedDoctorReviews.map((rev, i) => (
+                    <div key={i} className="p-3 rounded-xl bg-surface-container-low text-xs space-y-1">
+                      <div className="font-bold text-primary">{rev.author}</div>
+                      <p className="text-on-surface-variant italic leading-relaxed">"{rev.comment}"</p>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsReviewModalOpen(false)}
+                  className="w-full py-2 bg-surface-container text-primary font-bold text-xs rounded-lg"
+                >
+                  ÄÃ³ng
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // --- SCREEN 3: ÄIá»€U DÆ¯á» NG & CCHN (Screen 3 with GPS Radar Simulation & Modal) ---
+    function NursingScreen() {
+      const [specialty, setSpecialty] = useState('all');
+      const [shift, setShift] = useState('8h');
+      const [isBookingOpen, setIsBookingOpen] = useState(false);
+      const [bookingTarget, setBookingTarget] = useState({ name: '', shift: 'Ca 8h (Chuáº©n)', fee: 720000 });
+
+      const nurses = [
+        {
+          id: 1,
+          name: 'ÄD. Tráº§n Thá»‹ HoÃ i ThÆ°Æ¡ng',
+          title: 'Cá»­ nhÃ¢n Há»™ sinh & Äiá»u dÆ°á»¡ng BV Tá»« DÅ©',
+          cchn: '025619/SYT-HCM-CCHN',
+          agency: 'Sá»Ÿ Y Táº¿ TP. Há»“ ChÃ­ Minh',
+          rating: '4.98',
+          reviewCount: 86,
+          specialty: 'mother_baby',
+          hosp: 'BV Tá»« DÅ©, BV HÃ¹ng VÆ°Æ¡ng (7 nÄƒm lÃ¢m sÃ ng)',
+          tags: ['ChÄƒm sÃ³c máº¹ & bÃ©', 'Váº¿t má»• báº¯t con N1-N7', 'ThÃ´ng táº¯c tia sá»¯a'],
+          img: '../assets/images/img_1_e2d193fb.jpg'
+        },
+        {
+          id: 2,
+          name: 'ÄD. HoÃ ng BÃ­ch Ngá»c',
+          title: 'Cá»­ nhÃ¢n Äiá»u dÆ°á»¡ng Cao cáº¥p - BV LÃ£o Khoa TW',
+          cchn: '015433/BYT-CCHN',
+          agency: 'Cá»¥c QLKCB - Bá»™ Y Táº¿',
+          rating: '4.96',
+          reviewCount: 47,
+          specialty: 'elderly',
+          hosp: 'BV LÃ£o Khoa TW, BV Báº¡ch Mai (10 nÄƒm lÃ¢m sÃ ng)',
+          tags: ['LoÃ©t tá»³ Ä‘Ã¨ Ä‘á»™ II-III', 'ChÄƒm sÃ³c giáº£m nháº¹', 'Äáº·t sonde dáº¡ dÃ y'],
+          img: '../assets/images/img_2_ef7f4608.jpg'
+        },
+        {
+          id: 3,
+          name: 'ÄD. LÃª VÅ© Anh QuÃ¢n',
+          title: 'Cá»­ nhÃ¢n Äiá»u dÆ°á»¡ng Há»“i Sá»©c ICU - BV Chá»£ Ráº«y',
+          cchn: '018972/SYT-HCM-CCHN',
+          agency: 'Sá»Ÿ Y Táº¿ TP. Há»“ ChÃ­ Minh',
+          rating: '4.94',
+          reviewCount: 53,
+          specialty: 'wound_sonde',
+          hosp: 'BV Chá»£ Ráº«y (Khoa ICU), BV Thá»‘ng Nháº¥t (8 nÄƒm lÃ¢m sÃ ng)',
+          tags: ['Thay bÄƒng cáº¯t chá»‰ váº¿t má»•', 'Äáº·t sonde Foley', 'Váº­n hÃ nh mÃ¡y thá»Ÿ'],
+          img: '../assets/images/img_4_c1ecf62f.jpg'
+        }
+      ];
+
+      const filteredNurses = specialty === 'all' ? nurses : nurses.filter((n) => n.specialty === specialty);
+
+      const handleOpenBooking = (name, sTitle, price) => {
+        setBookingTarget({ name, shift: sTitle, fee: price });
+        setIsBookingOpen(true);
+      };
+
+      return (
+        <div className="w-full pt-20 bg-surface">
+          <section className="w-full py-10 bg-surface-container-low/70">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-6">
+              <div className="max-w-3xl space-y-3">
+                <span className="px-3 py-1 rounded-full bg-gold-light text-primary text-xs font-bold uppercase tracking-wider border border-gold-accent/30">
+                  Tháº©m Äá»‹nh Äá»™c Láº­p 4 BÆ°á»›c
+                </span>
+                <h1 className="font-serif text-3xl sm:text-4xl text-primary font-bold">
+                  Äá»™i NgÅ© Äiá»u DÆ°á»¡ng & BÃ¡c SÄ© CÃ³ CCHN Äá»™c Láº­p
+                </h1>
+                <p className="text-sm text-on-surface-variant leading-relaxed">
+                  100% nhÃ¢n sá»± y táº¿ Ä‘Æ°á»£c tháº©m Ä‘á»‹nh phÃ¡p lÃ½ bá»Ÿi Bá»™ Y Táº¿ & Sá»Ÿ Y Táº¿. Minh báº¡ch há»“ sÆ¡ lÃ¢m sÃ ng, kinh nghiá»‡m vÃ  biá»ƒu phÃ­ theo ca trá»±c chuáº©n má»±c GoCare.
+                </p>
+              </div>
+
+              {/* Quick Filters */}
+              <div className="flex flex-wrap items-center gap-2 pt-2">
+                {[
+                  { id: 'all', label: 'Táº¥t cáº£ chuyÃªn mÃ´n' },
+                  { id: 'elderly', label: 'ChÄƒm sÃ³c NgÆ°á»i cao tuá»•i' },
+                  { id: 'mother_baby', label: 'Máº¹ & BÃ© sÆ¡ sinh' },
+                  { id: 'wound_sonde', label: 'Thay bÄƒng cáº¯t chá»‰ & Sonde' }
+                ].map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setSpecialty(item.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                      specialty === item.id ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Cards Grid */}
+          <section className="w-full py-12 bg-surface">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {filteredNurses.map((nurse) => (
+                  <div key={nurse.id} className="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 p-6 shadow-md flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-4 pb-4 border-b border-outline-variant/30">
+                        <img alt={nurse.name} src={nurse.img} className="w-20 h-20 rounded-2xl object-cover ring-2 ring-gold-accent/40 shadow-sm" />
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <h2 className="font-serif text-lg font-bold text-primary">{nurse.name}</h2>
+                            <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">â­ {nurse.rating} ({nurse.reviewCount})</span>
+                          </div>
+                          <p className="text-xs text-gold-accent font-semibold">{nurse.title}</p>
+                          <div className="mt-2 p-2 rounded-lg bg-emerald-50 border border-emerald-300 text-[11px] text-emerald-950 font-medium">
+                            <div>Sá»‘ CCHN: <strong>{nurse.cchn}</strong></div>
+                            <div className="text-[10px] text-emerald-800">Tháº©m Ä‘á»‹nh: {nurse.agency}</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-xs text-on-surface-variant space-y-1.5">
+                        <p><strong>Bá»‡nh viá»‡n tá»«ng cÃ´ng tÃ¡c:</strong> {nurse.hosp}</p>
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {nurse.tags.map((t, idx) => (
+                            <span key={idx} className="px-2 py-0.5 rounded bg-surface-container text-[11px] font-medium text-primary">{t}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Pricing Table */}
+                      <div className="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/30">
+                        <div className="grid grid-cols-4 gap-1 text-center text-xs">
+                          <div className="p-1.5 rounded bg-surface-container-lowest">
+                            <span className="text-[10px] text-outline block">Ca 4h</span>
+                            <span className="font-bold text-primary">400k</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-gold-light border border-gold-accent">
+                            <span className="text-[10px] text-tertiary font-bold block">Ca 8h</span>
+                            <span className="font-bold text-primary">720k</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-surface-container-lowest">
+                            <span className="text-[10px] text-outline block">Ca Ä‘Ãªm 12h</span>
+                            <span className="font-bold text-primary">920k</span>
+                          </div>
+                          <div className="p-1.5 rounded bg-surface-container-lowest">
+                            <span className="text-[10px] text-outline block">Ca 24/24</span>
+                            <span className="font-bold text-primary">1.450k</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-outline-variant/30 flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => alert(`ÄÃ£ gá»­i yÃªu cáº§u tham váº¥n há»“ sÆ¡ lÃ¢m sÃ ng cá»§a ${nurse.name}. ChuyÃªn viÃªn sáº½ gá»i láº¡i sá»›m!`)}
+                        className="flex-1 py-2.5 rounded-xl border border-primary/40 text-primary text-xs font-bold hover:bg-gold-light transition-all"
+                      >
+                        Tham Váº¥n Há»“ SÆ¡
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenBooking(nurse.name, 'Ca 8h (Chuáº©n)', 720000)}
+                        className="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shadow-md transition-all flex items-center justify-center gap-1"
+                      >
+                        <span className="material-symbols-outlined text-sm">event_available</span>
+                        <span>Äáº·t Lá»‹ch Ca Trá»±c</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Radar Dispatch Simulation Container */}
+          <section className="w-full py-12 bg-surface-container-low border-t border-outline-variant/30">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold uppercase text-secondary tracking-wider flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-secondary animate-ping" />
+                    Äá»‹nh Vá»‹ Thá»i Gian Thá»±c â€¢ GPS Dispatch 24/7
+                  </span>
+                  <h2 className="font-serif text-2xl font-bold text-primary mt-1">Äiá»u Phá»‘i Y TÃ¡ Gáº§n Vá»‹ TrÃ­ Cá»§a Báº¡n Nháº¥t</h2>
+                </div>
+                <div className="px-3.5 py-1.5 rounded-xl bg-surface-container-lowest text-xs font-bold text-primary border border-outline-variant/30">
+                  ðŸ“ Vá»‹ trÃ­: Villas Tháº£o Äiá»n, TP. Thá»§ Äá»©c (ETA: 4 - 8 phÃºt)
+                </div>
+              </div>
+
+              {/* Graphic Radar */}
+              <div className="relative w-full h-80 rounded-2xl bg-brand-charcoal overflow-hidden flex items-center justify-center p-4">
+                <div className="w-64 h-64 rounded-full border border-gold-accent/30 animate-pulse flex items-center justify-center">
+                  <div className="w-44 h-44 rounded-full border border-gold-accent/40 flex items-center justify-center">
+                    <div className="w-24 h-24 rounded-full border border-gold-accent/60 flex items-center justify-center">
+                      <span className="w-4 h-4 rounded-full bg-gold-accent animate-ping" />
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute top-6 left-6 text-xs text-white/70">
+                  <p className="font-bold text-gold-accent">ÄIá»€U PHá»I Tá»° Äá»˜NG THá»œI GIAN THá»°C</p>
+                  <p className="text-[10px]">Thuáº­t toÃ¡n Dijkstra tá»‘i Æ°u quÃ£ng Ä‘Æ°á»ng di chuyá»ƒn</p>
+                </div>
+                <div className="absolute bottom-6 right-6 p-2 rounded-xl bg-surface/90 text-on-surface text-xs font-semibold shadow-xl border border-emerald-400">
+                  âš¡ 2 Äiá»u dÆ°á»¡ng viÃªn sáºµn sÃ ng trong bÃ¡n kÃ­nh 1.5 km
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Quick Booking Modal */}
+          {isBookingOpen && (
+            <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-surface-container-lowest max-w-md w-full rounded-2xl p-6 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between border-b pb-3">
+                  <h3 className="font-serif text-lg font-bold text-primary">XÃ¡c Nháº­n Äáº·t Lá»‹ch Ca Trá»±c</h3>
+                  <button type="button" onClick={() => setIsBookingOpen(false)}>
+                    <span className="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </div>
+                <div className="text-xs space-y-2 text-on-surface">
+                  <div><strong>NhÃ¢n sá»± phá»¥ trÃ¡ch:</strong> {bookingTarget.name}</div>
+                  <div><strong>GÃ³i lá»±a chá»n:</strong> {bookingTarget.shift}</div>
+                  <div><strong>Tá»•ng phÃ­ táº¡m tÃ­nh:</strong> <span className="text-secondary font-bold">{bookingTarget.fee.toLocaleString('vi-VN')} VNÄ</span></div>
+                  <p className="text-[11px] text-on-surface-variant italic leading-normal">
+                    *ÄÃ£ bao gá»“m gÄƒng tay vÃ´ khuáº©n, thiáº¿t bá»‹ Ä‘o sinh hiá»‡u chuáº©n viá»‡n vÃ  phÃ­ di chuyá»ƒn ná»™i thÃ nh.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    alert('ÄÃ£ tiáº¿p nháº­n yÃªu cáº§u! Äiá»u phá»‘i viÃªn GoCare sáº½ gá»i láº¡i cho báº¡n trong 3 phÃºt.');
+                    setIsBookingOpen(false);
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-primary text-on-primary text-xs font-bold uppercase tracking-wider"
+                >
+                  XÃ¡c Nháº­n & Äiá»u Phá»‘i Ngay
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // --- SCREEN 4: WELLNESS & NHÃ€ THUá»C (Screen 4 with Pharmacy & Partner Chains) ---
+    function WellnessScreen() {
+      const [searchTerm, setSearchTerm] = useState('');
+      const [category, setCategory] = useState('all');
+
+      const products = [
+        {
+          id: 1,
+          name: 'Amlor 5mg (Amlodipine)',
+          brand: 'Pfizer (PhÃ¡p)',
+          category: 'tim-mach',
+          price: '325.000Ä‘',
+          pack: 'Há»™p 30 viÃªn',
+          desc: 'Kiá»ƒm soÃ¡t tÄƒng huyáº¿t Ã¡p vÃ´ cÄƒn, Ä‘iá»u trá»‹ Ä‘au tháº¯t ngá»±c á»•n Ä‘á»‹nh máº¡n tÃ­nh.',
+          img: '../assets/images/img_17_36972206.jpg'
+        },
+        {
+          id: 2,
+          name: 'Micardis Plus 40/12.5mg',
+          brand: 'Boehringer (Äá»©c)',
+          category: 'tim-mach',
+          price: '345.000Ä‘',
+          pack: 'Há»™p 28 viÃªn',
+          desc: 'Telmisartan phá»‘i há»£p Hydrochlorothiazide Ä‘iá»u trá»‹ tÄƒng huyáº¿t Ã¡p, báº£o vá»‡ chá»©c nÄƒng tháº­n.',
+          img: '../assets/images/img_18_452288b7.jpg'
+        },
+        {
+          id: 3,
+          name: 'Glucophage XR 750mg',
+          brand: 'Merck Sante (PhÃ¡p)',
+          category: 'tieu-duong',
+          price: '185.000Ä‘',
+          pack: 'Há»™p 30 viÃªn',
+          desc: 'Metformin phÃ³ng thÃ­ch kÃ©o dÃ i, kiá»ƒm soÃ¡t Ä‘Æ°á»ng huyáº¿t á»•n Ä‘á»‹nh 24 giá».',
+          img: '../assets/images/img_19_8a2aa81a.jpg'
+        },
+        {
+          id: 4,
+          name: 'Celebrex 200mg (Celecoxib)',
+          brand: 'Pfizer (Má»¹)',
+          category: 'co-xuong-khop',
+          price: '390.000Ä‘',
+          pack: 'Há»™p 30 viÃªn',
+          desc: 'KhÃ¡ng viÃªm giáº£m Ä‘au khá»›p thoÃ¡i hÃ³a, báº£o vá»‡ niÃªm máº¡c dáº¡ dÃ y.',
+          img: '../assets/images/img_20_81c14596.jpg'
+        },
+        {
+          id: 5,
+          name: 'Viartril-S 500mg',
+          brand: 'Viatris (Má»¹)',
+          category: 'co-xuong-khop',
+          price: '640.000Ä‘',
+          pack: 'Há»™p 80 viÃªn',
+          desc: 'Glucosamine Sulfate tinh khiáº¿t kÃ­ch thÃ­ch sáº£n sinh dá»‹ch khá»›p, tÃ¡i táº¡o sá»¥n.',
+          img: '../assets/images/img_21_9c3f886e.jpg'
+        },
+        {
+          id: 6,
+          name: 'Tanakan 40mg (EGb 761)',
+          brand: 'Ipsen (PhÃ¡p)',
+          category: 'than-kinh-nao-bo',
+          price: '450.000Ä‘',
+          pack: 'Há»™p 90 viÃªn',
+          desc: 'Chiáº¿t xuáº¥t Ginkgo Biloba chuáº©n hÃ³a há»— trá»£ sa sÃºt trÃ­ tuá»‡ nháº¹ Ä‘áº¿n vá»«a, Ã¹ tai vÃ  tiá»n Ä‘Ã¬nh.',
+          img: '../assets/images/img_22_333563ac.jpg'
+        }
+      ];
+
+      const filteredProducts = products.filter((p) => {
+        const matchesCat = category === 'all' || p.category === category;
+        const matchesQuery = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.desc.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesCat && matchesQuery;
+      });
+
+      return (
+        <div className="w-full pt-20 bg-surface">
+          {/* Header */}
+          <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-10 space-y-4">
+            <div className="space-y-2">
+              <span className="text-xs uppercase font-bold text-secondary tracking-wider">Tiá»‡n Nghi Y Táº¿ & ChÄƒm SÃ³c Chá»§ Äá»™ng</span>
+              <h1 className="font-serif text-3xl sm:text-4xl text-primary font-bold">Wellness & NhÃ  Thuá»‘c GoCare</h1>
+              <p className="text-sm text-on-surface-variant max-w-3xl leading-relaxed">
+                Dá»‹ch vá»¥ y táº¿ Ä‘áº·c quyá»n, trang thiáº¿t bá»‹ há»— trá»£ váº­n Ä‘á»™ng cao cáº¥p vÃ  nhÃ  thuá»‘c trá»±c tuyáº¿n liÃªn thÃ´ng tá»± Ä‘á»™ng vá»›i Há»‡ sinh thÃ¡i Há»“ sÆ¡ Y khoa Äiá»‡n tá»­ (EHR).
+              </p>
+            </div>
+
+            {/* Partner Network Banner */}
+            <div className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm mt-6">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div className="space-y-1.5 text-center lg:text-left">
+                  <span className="text-xs font-bold text-secondary uppercase flex items-center justify-center lg:justify-start gap-1">
+                    <span className="material-symbols-outlined text-base">handshake</span> Máº¡ng LÆ°á»›i Äá»‘i TÃ¡c PhÃ¢n Phá»‘i DÆ°á»£c Pháº©m
+                  </span>
+                  <h3 className="font-serif text-xl font-bold text-primary">LiÃªn Káº¿t Trá»±c Tiáº¿p NhÃ  Thuá»‘c Long ChÃ¢u & An Khang</h3>
+                  <p className="text-xs text-on-surface-variant max-w-xl">
+                    Äáº£m báº£o thuá»‘c biá»‡t dÆ°á»£c chÃ­nh hÃ£ng 100%, báº£o quáº£n Ä‘áº¡t chuáº©n GSP, kiá»ƒm duyá»‡t bá»Ÿi DÆ°á»£c sÄ© LÃ£o khoa vÃ  giao thuá»‘c há»a tá»‘c Ä‘áº¿n táº­n tÆ° gia trong 1 - 2 giá».
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/30 flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white rounded-lg p-1 flex items-center justify-center shadow-xs">
+                      <span className="font-bold text-xs text-blue-700">FPT LC</span>
+                    </div>
+                    <div className="text-left text-xs">
+                      <div className="font-bold text-primary">Long ChÃ¢u</div>
+                      <div className="text-[10px] text-secondary font-semibold">Giao 1 - 2h</div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/30 flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white rounded-lg p-1 flex items-center justify-center shadow-xs">
+                      <span className="font-bold text-xs text-emerald-700">AK MWG</span>
+                    </div>
+                    <div className="text-left text-xs">
+                      <div className="font-bold text-primary">An Khang</div>
+                      <div className="text-[10px] text-secondary font-semibold">100% hÃ³a Ä‘Æ¡n BYT</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Pharmacy Store Section */}
+          <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-16 space-y-8">
+            {/* Search and Category Filter */}
+            <div className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="relative flex-1">
+                  <span className="material-symbols-outlined absolute left-3.5 top-3 text-outline text-lg">search</span>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="TÃ¬m theo tÃªn biá»‡t dÆ°á»£c, hoáº¡t cháº¥t (Amlodipine, Metformin...)"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface-container-lowest text-xs focus:ring-1 focus:ring-primary-container"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => alert('ÄÃ£ má»Ÿ cá»•ng táº£i Ä‘Æ¡n thuá»‘c lÃªn há»‡ thá»‘ng DÆ°á»£c sÄ© trá»±c!')}
+                  className="px-5 py-2.5 rounded-xl bg-secondary text-on-secondary font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm"
+                >
+                  <span className="material-symbols-outlined text-base">upload_file</span>
+                  <span>Gá»­i Toa BÃ¡c SÄ©</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                {[
+                  { id: 'all', label: 'Táº¥t Cáº£ Danh Má»¥c' },
+                  { id: 'tim-mach', label: 'Tim Máº¡ch & Huyáº¿t Ãp' },
+                  { id: 'tieu-duong', label: 'ÄÃ¡i ThÃ¡o ÄÆ°á»ng' },
+                  { id: 'co-xuong-khop', label: 'CÆ¡ XÆ°Æ¡ng Khá»›p' },
+                  { id: 'than-kinh-nao-bo', label: 'Tháº§n Kinh & NÃ£o Bá»™' }
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setCategory(cat.id)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                      category === cat.id ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Products Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProducts.map((prod) => (
+                <div key={prod.id} className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center text-[10px]">
+                      <span className="px-2 py-0.5 rounded bg-error-container text-error font-bold">KÃª ÄÆ¡n BÃ¡c SÄ©</span>
+                      <span className="text-outline font-semibold">{prod.brand}</span>
+                    </div>
+
+                    <div className="h-40 rounded-xl bg-surface-container flex items-center justify-center p-2 overflow-hidden">
+                      <img alt={prod.name} src={prod.img} className="max-h-full max-w-full object-contain hover:scale-105 transition-transform" />
+                    </div>
+
+                    <div>
+                      <h4 className="font-serif font-bold text-primary text-sm line-clamp-1">{prod.name}</h4>
+                      <p className="text-xs text-on-surface-variant line-clamp-2 mt-1">{prod.desc}</p>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-outline-variant/30 space-y-2">
+                    <div className="flex items-baseline justify-between">
+                      <span className="font-bold text-secondary text-base">{prod.price}</span>
+                      <span className="text-[11px] text-outline">{prod.pack}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <button
+                        type="button"
+                        onClick={() => alert(`ÄÆ¡n hÃ ng thuá»‘c ${prod.name} Ä‘Æ°á»£c chuyá»ƒn tiáº¿p Ä‘áº¿n NhÃ  thuá»‘c FPT Long ChÃ¢u.`)}
+                        className="py-1.5 px-2 rounded-lg bg-blue-50 text-blue-700 font-bold border border-blue-200 text-center"
+                      >
+                        Long ChÃ¢u (1h)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => alert(`ÄÆ¡n hÃ ng thuá»‘c ${prod.name} Ä‘Æ°á»£c chuyá»ƒn tiáº¿p Ä‘áº¿n NhÃ  thuá»‘c An Khang.`)}
+                        className="py-1.5 px-2 rounded-lg bg-emerald-50 text-emerald-800 font-bold border border-emerald-200 text-center"
+                      >
+                        An Khang (1h)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    // --- SCREEN 5: Cá»”NG Bá»†NH NHÃ‚N (Screen 5 with EHR, Pain Scale & Telemetry) ---
+    function PatientPortalScreen() {
+      const [painScore, setPainScore] = useState(3);
+      const [isChestPain, setIsChestPain] = useState(false);
+      const [isStrokeSign, setIsStrokeSign] = useState(false);
+      const [symptomNote, setSymptomNote] = useState('');
+      const [triageAlert, setTriageAlert] = useState(null);
+
+      const isRedAlert = isChestPain || isStrokeSign || painScore >= 8;
+
+      const handleTriageSubmit = () => {
+        if (isRedAlert) {
+          alert('Há»† THá»NG ÄÃƒ KÃCH HOáº T QUY TRÃŒNH CODE RED!\nThÃ´ng tin bá»‡nh nhÃ¢n BN. Tráº§n HoÃ i PhÆ°Æ¡ng Ä‘Ã£ Ä‘Æ°á»£c chuyá»ƒn kháº©n cáº¥p Ä‘áº¿n BÃ¡c sÄ© TrÆ°á»Ÿng ca vÃ  Äá»™i Cáº¥p Cá»©u GoCare.');
+          setTriageAlert('CODE_RED');
+        } else {
+          alert('Phiáº¿u khai bÃ¡o sá»©c khá»e Ä‘Ã£ Ä‘Æ°á»£c gá»­i thÃ nh cÃ´ng Ä‘áº¿n Äiá»u dÆ°á»¡ng phá»¥ trÃ¡ch vÃ  lÆ°u vÃ o bá»‡nh Ã¡n Ä‘iá»‡n tá»­ EHR.');
+          setTriageAlert('NORMAL');
+        }
+      };
+
+      return (
+        <div className="w-full pt-20 bg-surface">
+          {/* Top Security & Patient Banner */}
+          <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6 space-y-4">
+            <div className="bg-surface-container-high px-4 py-2.5 rounded-t-xl flex flex-wrap items-center justify-between gap-3 text-xs text-on-surface-variant">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-surface-container-lowest rounded-full font-bold text-primary shadow-xs">
+                  <span className="material-symbols-outlined text-sm text-secondary">verified_user</span>
+                  VNeID Má»©c 2 (Bá»™ CÃ´ng An / Cá»¥c QLKCB)
+                </span>
+                <span className="flex items-center gap-1 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  ÄÆ°á»ng truyá»n mÃ£ hÃ³a cáº¥p Ä‘á»™ 4 (HL7 FHIR & HIPAA Shield)
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 bg-surface-container-lowest rounded-lg font-bold text-secondary">OTP 2FA Báº­t</span>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest p-6 rounded-b-xl shadow-md border border-outline-variant/30 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-serif text-2xl font-bold">
+                  TP
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-serif text-2xl font-bold text-primary">BN. Tráº§n HoÃ i PhÆ°Æ¡ng</h2>
+                    <span className="px-2 py-0.5 bg-surface-container text-primary text-xs font-semibold rounded-full">Ná»¯ â€¢ 73 Tuá»•i</span>
+                  </div>
+                  <div className="text-xs text-outline flex items-center gap-3 mt-1">
+                    <span>PID: <strong>GC-88294-VN</strong></span>
+                    <span>Biá»‡t thá»± Palm Garden, Tháº£o Äiá»n, TP. Thá»§ Äá»©c</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Critical Alert Badge */}
+              <div className="flex items-center gap-3 bg-error-container/40 p-3 rounded-xl border border-error/30">
+                <div className="w-10 h-10 rounded-lg bg-error text-on-error flex flex-col items-center justify-center font-bold text-xs">
+                  <span>O</span>
+                  <span className="text-[9px]">Rh-</span>
+                </div>
+                <div className="text-xs">
+                  <div className="font-bold text-error flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm">warning</span> NhÃ³m MÃ¡u Hiáº¿m O Rh(â€“)
+                  </div>
+                  <p className="text-[11px] text-on-surface-variant">Dá»‹ á»©ng cáº¥p Ä‘á»™ náº·ng: Penicillin & NSAIDs</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Vitals Telemetry */}
+          <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {[
+                { title: 'Huyáº¿t Ãp', val: '132/84', unit: 'mmHg', status: 'á»”n Ä‘á»‹nh', icon: 'blood_pressure' },
+                { title: 'Nhá»‹p Tim', val: '74', unit: 'bpm', status: 'Nhá»‹p xoang Ä‘á»u', icon: 'favorite' },
+                { title: 'SpO2 KhÃ­ Trá»i', val: '98%', unit: 'O2', status: 'Ráº¥t tá»‘t', icon: 'air' },
+                { title: 'ÄÆ°á»ng Huyáº¿t', val: '5.8', unit: 'mmol/L', status: 'Chuáº©n Ä‘Ã³i', icon: 'water_drop' },
+                { title: 'ThÃ¢n Nhiá»‡t', val: '36.6', unit: 'Â°C', status: 'KhÃ´ng sá»‘t', icon: 'device_thermostat' },
+                { title: 'Giáº¥c Ngá»§ ÄÃªm', val: '6g 45p', unit: 'h/Ä‘Ãªm', status: 'SÃ¢u giáº¥c', icon: 'bedtime' }
+              ].map((vt, i) => (
+                <div key={i} className="bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/30 shadow-xs">
+                  <div className="flex justify-between items-center text-secondary">
+                    <span className="text-[11px] font-bold uppercase">{vt.title}</span>
+                    <span className="material-symbols-outlined text-base">{vt.icon}</span>
+                  </div>
+                  <div className="font-serif text-xl font-bold text-primary mt-1">{vt.val}</div>
+                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-1 inline-block">{vt.status}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Interactive AI Symptom Checker & Pain Scale */}
+          <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-8">
+            <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 shadow-md space-y-6">
+              <div>
+                <span className="text-xs uppercase font-bold text-secondary tracking-wider">Há»‡ Thá»‘ng Trá»±c Ban 24/7</span>
+                <h3 className="font-serif text-2xl font-bold text-primary mt-1">Phiáº¿u Khai BÃ¡o Sá»©c Khá»e & Triá»‡u Chá»©ng HÃ´m Nay</h3>
+              </div>
+
+              {/* Pain Scale */}
+              <div className="p-4 rounded-xl bg-surface-container space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-bold text-primary uppercase">Thang Äo Cáº£m GiÃ¡c Äau (0 - 10)</label>
+                  <span className="font-serif text-sm font-bold text-secondary">Má»©c {painScore} / 10</span>
+                </div>
+
+                <div className="grid grid-cols-11 gap-1.5">
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setPainScore(num)}
+                      className={`py-2 rounded-lg text-xs font-bold transition-all ${
+                        painScore === num
+                          ? 'bg-primary text-on-primary shadow-sm scale-105'
+                          : 'bg-surface-container-lowest text-on-surface hover:bg-surface-container-high'
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Critical Symptoms */}
+              <div className="space-y-3">
+                <label className="text-xs font-bold text-primary uppercase block">Dáº¥u Hiá»‡u Báº¥t ThÆ°á»ng Cáº§n LÆ°u Ã</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <label className="p-3 rounded-xl border border-error/40 bg-error-container/20 flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isChestPain}
+                      onChange={(e) => setIsChestPain(e.target.checked)}
+                      className="mt-0.5 accent-red-600 rounded"
+                    />
+                    <div>
+                      <span className="font-bold text-error block">Äau tháº¯t ngá»±c lan cÃ¡nh tay trÃ¡i</span>
+                      <span className="text-on-surface-variant text-[11px]">Dáº¥u hiá»‡u thiáº¿u mÃ¡u cÆ¡ tim cáº¥p (BÃ¡o Äá»™ng Äá»)</span>
+                    </div>
+                  </label>
+
+                  <label className="p-3 rounded-xl border border-error/40 bg-error-container/20 flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isStrokeSign}
+                      onChange={(e) => setIsStrokeSign(e.target.checked)}
+                      className="mt-0.5 accent-red-600 rounded"
+                    />
+                    <div>
+                      <span className="font-bold text-error block">TÃª bÃ¬ ná»­a ngÆ°á»i / Yáº¿u chi Ä‘á»™t ngá»™t</span>
+                      <span className="text-on-surface-variant text-[11px]">TiÃªu chuáº©n cáº£nh bÃ¡o FAST tai biáº¿n tÃ¡i phÃ¡t</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="text-xs font-bold text-primary uppercase block mb-1">Ghi chÃº riÃªng cho BÃ¡c sÄ© trá»±c</label>
+                <textarea
+                  rows="3"
+                  value={symptomNote}
+                  onChange={(e) => setSymptomNote(e.target.value)}
+                  placeholder="VÃ­ dá»¥: SÃ¡ng nay cá»¥ thá»©c dáº­y hÆ¡i má»‡t, khÃ³ thá»Ÿ nháº¹ khi náº±m Ä‘áº§u báº±ng..."
+                  className="w-full p-3 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs focus:ring-1 focus:ring-primary-container"
+                />
+              </div>
+
+              {/* Submit Triage */}
+              <div className="p-4 rounded-xl bg-surface-container flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-xs">
+                  <span className="text-outline uppercase font-bold block">PhÃ¢n loáº¡i AI Hiá»‡n Táº¡i:</span>
+                  <span className={`font-bold text-sm ${isRedAlert ? 'text-error' : 'text-emerald-700'}`}>
+                    {isRedAlert ? 'âš ï¸ BÃ¡o Äá»™ng Äá» (Cáº§n can thiá»‡p kháº©n)' : 'âœ… BÃ¬nh thÆ°á»ng - Theo dÃµi thÆ°á»ng quy'}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleTriageSubmit}
+                  className={`w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-on-primary transition-all shadow-md ${
+                    isRedAlert ? 'bg-error hover:bg-error/90 animate-pulse' : 'bg-secondary hover:bg-secondary-container'
+                  }`}
+                >
+                  {isRedAlert ? 'PhÃ¡t TÃ­n Hiá»‡u Cáº¥p Cá»©u Äá»' : 'Gá»­i Khai BÃ¡o Sá»©c Khá»e'}
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      );
+    }
+
+    // --- MAIN APP ROUTING COMPONENT ---
+    function App() {
+      return (
+        <div className="min-h-screen flex flex-col bg-surface text-on-surface">
+          <Header />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomeScreen />} />
+              <Route path="/chuyen-khoa" element={<DoctorsScreen />} />
+              <Route path="/dieu-duong" element={<NursingScreen />} />
+              <Route path="/wellness" element={<WellnessScreen />} />
+              <Route path="/cong-benh-nhan" element={<PatientPortalScreen />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      );
+    }
+
+    // Render with MemoryRouter
+    const rootElement = document.getElementById('root');
+    const root = createRoot(rootElement);
+    root.render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+  </script>
+</body>
+</html>

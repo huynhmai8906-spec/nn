@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Khoa & Đội Ngũ Bác Sĩ - GOCARE</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#543126",
+                        "secondary": "#a04100",
+                        "surface": "#fff8f5",
+                        "surface-container-low": "#fbf2ed",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1e1b18",
+                        "outline": "#83746f"
+                    }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { display: none; }
+        @keyframes soundWave {
+            0% { height: 4px; }
+            100% { height: 26px; }
+        }
+        .wave-bar { animation: soundWave 1.2s ease-in-out infinite alternate; }
+        .gold-glow-card {
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(213, 195, 189, 0.5);
+        }
+        .gold-glow-card:hover {
+            transform: translateY(-8px);
+            border-color: #C5A059;
+            box-shadow: 0 20px 35px -8px rgba(197, 160, 89, 0.22);
+        }
+    </style>
+</head>
+
+<body class="bg-[#fff8f5] font-['Be_Vietnam_Pro'] text-[#1e1b18] antialiased">
+
+    <!-- HEADER -->
+    <header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm">
+        <div class="h-20 max-w-[1440px] mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-[#543126] flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">health_and_safety</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold tracking-tight text-[#543126] leading-none">GOCARE</span>
+                    <span class="text-[10px] tracking-wider text-[#a04100] font-semibold uppercase mt-0.5">Dịch vụ chăm sóc & Bệnh viện</span>
+                </div>
+            </a>
+            
+            <nav class="hidden xl:flex items-center gap-8">
+                <a href="#" class="text-gray-600 hover:text-black font-medium">Trang chủ</a>
+                <a href="#" class="text-[#543126] font-bold border-b-2 border-[#a04100] pb-1">Chuyên khoa & Bác sĩ</a>
+                <a href="#" class="text-gray-600 hover:text-black font-medium">Điều dưỡng & CCHN</a>
+                <a href="#" class="text-gray-600 hover:text-black font-medium">Wellness & Nhà thuốc</a>
+                <a href="#" class="text-gray-600 hover:text-black font-medium">Cổng bệnh nhân</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="tel:19006868" class="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-orange-50 text-[#a04100] border border-orange-200">
+                    <span class="material-symbols-outlined text-[18px]">emergency</span>
+                    <div class="flex flex-col text-left leading-none">
+                        <span class="text-[10px] text-gray-500 uppercase font-semibold">Hotline 24/7</span>
+                        <span class="text-sm font-bold">1900 6868</span>
+                    </div>
+                </a>
+                <a href="#" class="px-5 py-2.5 rounded-lg bg-[#543126] text-white font-bold text-sm tracking-wide uppercase shadow hover:bg-opacity-90 transition">
+                    ĐẶT LỊCH KHÁM
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="pt-20 min-h-screen">
+        
+        <!-- SECTION: HERO HEADER -->
+        <section class="w-full bg-gradient-to-b from-[#fff8f5] to-[#fbf2ed] py-12 border-b border-gray-200">
+            <div class="max-w-[1440px] mx-auto px-6">
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 text-[#a04100] font-semibold text-xs uppercase tracking-wider mb-4">
+                        <span class="material-symbols-outlined text-[16px]">verified</span> Hội Đồng Y Khoa Quốc Tế Tại Việt Nam
+                    </span>
+                    <h1 class="text-4xl md:text-5xl font-['Playfair_Display'] font-bold text-[#543126] leading-tight mb-4">
+                        Hội Đồng Bác Sĩ Chuyên Khoa Cấp Cao - 100% Y Bác Sĩ Người Việt Đầu Ngành
+                    </h1>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Hội tụ các chuyên gia Lão khoa, Tim mạch và Sức khỏe tinh thần từng giữ trọng trách tại các viện trung ương hàng đầu: <strong class="text-black">Bệnh viện Chợ Rẫy, Bạch Mai, Đại học Y Dược TP.HCM và Viện Lão Khoa Quốc Gia</strong>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: DANH SÁCH BÁC SĨ -->
+        <section class="w-full py-16 bg-[#fff8f5]">
+            <div class="max-w-[1440px] mx-auto px-6">
+                <div class="flex justify-between items-end mb-8 border-b pb-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-wider text-[#a04100] font-bold">Đội ngũ chuyên gia hàng đầu</span>
+                        <h2 class="text-2xl font-bold text-[#543126]">DANH SÁCH BÁC SĨ CỐ VẤN & TRỰC TIẾP ĐIỀU TRỊ</h2>
+                    </div>
+                </div>
+
+                <!-- Doctor Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Doctor Card 1 -->
+                    <article class="gold-glow-card bg-white rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm">
+                        <div class="p-6 flex flex-col sm:flex-row gap-6">
+                            <!-- Hình ảnh bác sĩ: Thay link ảnh vào đây -->
+                            <div class="relative w-full sm:w-48 h-60 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                                <img src="https://apicms.bachmai.gov.vn/documents/0/0/d.jpg/f70bbc4c-a10c-449e-9d2a-189bcb8612e3?language=vi" alt="PGS. TS. Đào Xuân Cơ" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#543126] text-white text-[10px] font-bold uppercase">Trưởng Khoa</span>
+                            </div>
+                            <div class="flex flex-col justify-between flex-grow">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-xs font-bold text-[#a04100] bg-orange-50 px-2.5 py-1 rounded">Tim Mạch & Lão Khoa</span>
+                                        <span class="text-emerald-700 bg-emerald-50 text-[11px] font-semibold px-2.5 py-1 rounded flex items-center gap-1">🟢 Đang trực tuyến</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-[#543126]">PGS. TS. Đào Xuân Cơ</h3>
+                                    <p class="text-sm text-[#a04100] font-medium mt-0.5">Giám đốc Bệnh viện</p>
+                                    <p class="text-xs text-gray-500 mt-1">BV Bạch Mai • Trong hơn 30 năm hành nghề Y, ông đã triển khai nhiều kỹ thuật hiện đại như lọc máu liên tục, thay huyết tương và lọc huyết tương nhằm điều trị các bệnh lý nghiêm trọng. Đặc biệt, ông cùng đồng nghiệp đã phát triển kỹ thuật ECMO (Oxy hóa qua màng ngoài cơ thể), giúp Bệnh viện trở thành đơn vị tiên phong trong điều trị người bệnh nặng bằng phương pháp này tại Việt Nam.</p>
+                                    <p class="text-sm text-gray-600 mt-2 line-clamp-2">Chuyên sâu điều trị Máu.</p>
+                                </div>
+                                <div class="pt-3 border-t text-xs flex justify-between text-gray-600">
+                                    <span>CCHN: <strong>008741/BYT</strong></span>
+                                    <span class="text-[#a04100] font-bold">Khám 60p: 850.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-3 bg-gray-50 border-t flex items-center justify-between">
+                            <span class="text-xs text-amber-600 font-semibold">⭐ Đánh giá: 98% hài lòng</span>
+                            <a href="#" class="px-4 py-2 rounded-lg bg-[#543126] text-white text-sm font-bold hover:bg-opacity-90">Đặt Lịch Khám 1:1</a>
+                        </div>
+                    </article>
+
+                    <!-- Doctor Card 2 -->
+                    <article class="gold-glow-card bg-white rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm">
+                        <div class="p-6 flex flex-col sm:flex-row gap-6">
+                            <!-- Hình ảnh bác sĩ: Thay link ảnh vào đây -->
+                            <div class="relative w-full sm:w-48 h-60 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                                <img src="https://images.unsplash.com/photo-1594824813576-92c2a39a8501?auto=format&fit=crop&w=500&q=80" alt="TS.BS Lê Thị Ánh Tuyết" class="w-full h-full object-cover">
+                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#a04100] text-white text-[10px] font-bold uppercase">Chuyên Gia</span>
+                            </div>
+                            <div class="flex flex-col justify-between flex-grow">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-2">
+                                        <span class="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded">Thần Kinh & Sa Sút Trí Tuệ</span>
+                                        <span class="text-emerald-700 bg-emerald-50 text-[11px] font-semibold px-2.5 py-1 rounded flex items-center gap-1">🟢 Đang trực tuyến</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-[#543126]">TS.BS Lê Thị Ánh Tuyết</h3>
+                                    <p class="text-sm text-[#a04100] font-medium mt-0.5">Chuyên gia Thần Kinh & Sa Sút Trí Tuệ Lão Khoa</p>
+                                    <p class="text-xs text-gray-500 mt-1">BV Bạch Mai & ĐHYD TP.HCM • 22 năm kinh nghiệm</p>
+                                    <p class="text-sm text-gray-600 mt-2 line-clamp-2">Chuyên sâu đánh giá suy giảm nhận thức nhẹ (MCI), bệnh lý Parkinson, hội chứng Alzheimer.</p>
+                                </div>
+                                <div class="pt-3 border-t text-xs flex justify-between text-gray-600">
+                                    <span>CCHN: <strong>014522/BYT</strong></span>
+                                    <span class="text-[#a04100] font-bold">Khám 60p: 800.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-3 bg-gray-50 border-t flex items-center justify-between">
+                            <span class="text-xs text-amber-600 font-semibold">⭐ Đánh giá: 99% hài lòng</span>
+                            <a href="#" class="px-4 py-2 rounded-lg bg-[#543126] text-white text-sm font-bold hover:bg-opacity-90">Đặt Lịch Khám 1:1</a>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full bg-[#fbf2ed] text-[#1e1b18] py-12 border-t border-gray-200">
+        <div class="max-w-[1440px] mx-auto px-6 text-center">
+            <p class="text-sm text-gray-600">© 2024 GoCare - Dịch Vụ Chăm Sóc & Bệnh Viện GoCare. An tâm chăm sóc, kết nối tức thì.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

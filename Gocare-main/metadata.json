@@ -1,0 +1,8 @@
+{
+  "name": "GoCare - An Tâm Chăm Sóc, Kết Nối Tức Thì",
+  "description": "Hệ Thống Y Khoa & Viện Dưỡng Lão Chuẩn Quốc Tế với bản đồ GPS Dijkstra/A*, cổng bệnh nhân EHR và hệ sinh thái chăm sóc y tế 5 sao.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
