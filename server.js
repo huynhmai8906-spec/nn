@@ -376,7 +376,11 @@ app.post('/api/ehr/triage', authenticateToken, (req, res) => {
   }
 });
 
-// Static assets serving
+// Static assets serving (robust against sub-path relative requests)
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('*/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/stitch_interactive_image_click_animations', express.static(path.join(__dirname, 'stitch_interactive_image_click_animations')));
+app.use('*/stitch_interactive_image_click_animations', express.static(path.join(__dirname, 'stitch_interactive_image_click_animations')));
 app.use(express.static(__dirname));
 
 // SPA Catch-all
@@ -390,12 +394,10 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Local dev server listen
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`GoCare server running on http://0.0.0.0:${PORT}`);
-    console.log(`Backend Auth APIs ready at http://0.0.0.0:${PORT}/api/auth`);
-  });
-}
+// Server listen on 0.0.0.0:3000
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`GoCare server running on http://0.0.0.0:${PORT}`);
+  console.log(`Backend Auth APIs ready at http://0.0.0.0:${PORT}/api/auth`);
+});
 
 export default app;
