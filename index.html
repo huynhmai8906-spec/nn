@@ -260,6 +260,39 @@
     .smooth-transition {
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    /* Clean, Professional Print Styles (In Phiếu Khám & Hóa Đơn Chuẩn Y Khoa) */
+    @media print {
+      header, footer, aside, button, nav, .no-print, [aria-label="Stitch Project Navigator"] {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .fixed, .fixed.inset-0 {
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+      }
+      .modal-animated, .printable-slip, [role="dialog"] {
+        box-shadow: none !important;
+        border: 1px solid #333333 !important;
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        position: static !important;
+        page-break-inside: avoid;
+        background: #ffffff !important;
+      }
+      * {
+        text-shadow: none !important;
+      }
+    }
   </style>
 
   <!-- React & Router dependencies v6.3.0 -->
@@ -798,8 +831,8 @@
             <div className="p-5 sm:p-7 overflow-y-auto space-y-6 flex-1 bg-surface">
               {isBooked ? (
                 /* Success Confirmation Ticket */
-                <div className="p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border-2 border-emerald-500 shadow-xl space-y-6 text-center modal-animated">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-inner">
+                <div className="printable-slip p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border-2 border-emerald-500 shadow-xl space-y-6 text-center modal-animated">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-inner no-print">
                     <span className="material-symbols-outlined text-4xl">check_circle</span>
                   </div>
                   <div className="space-y-1">
@@ -858,7 +891,7 @@
                     </ul>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2 no-print">
                     <button
                       type="button"
                       onClick={() => window.print()}
@@ -1417,22 +1450,22 @@
               <div className="absolute inset-0 bg-gradient-to-r from-tertiary/95 via-tertiary/80 to-tertiary/45" />
             </div>
 
-            <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 pt-36 pb-20 lg:pt-44 lg:pb-24 min-h-[92vh] flex flex-col justify-between">
-              <div className="max-w-3xl space-y-6">
+            <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 pt-36 pb-20 lg:pt-44 lg:pb-24 min-h-[92vh] flex flex-col justify-between items-center text-center">
+              <div className="max-w-4xl mx-auto space-y-6 flex flex-col items-center">
                 <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface/15 backdrop-blur-md text-surface border border-white/20 shadow-md">
                   <span className="w-2.5 h-2.5 rounded-full bg-secondary-fixed animate-ping" />
                   <span className="text-xs uppercase tracking-widest text-surface font-bold">GoCare • An tâm chăm sóc, kết nối tức thì</span>
                 </div>
 
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-surface font-bold leading-tight">
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-surface font-bold leading-tight text-center">
                   Nơi Tuổi Xế Chiều Là Một <span className="text-secondary-fixed italic underline decoration-gold-accent/60">Miền An Trú</span> Tươi Sáng & Nhân Văn
                 </h1>
 
-                <p className="text-base sm:text-lg text-tertiary-fixed max-w-2xl leading-relaxed">
+                <p className="text-base sm:text-lg text-tertiary-fixed max-w-2xl leading-relaxed text-center mx-auto">
                   Kết hợp hoàn hảo giữa chuẩn mực y khoa điều dưỡng khắt khe và sự nâng niu tâm hồn trọn vẹn từng khoảnh khắc, kiến tạo không gian sống tự tôn, an tâm và tĩnh tại cho bậc sinh thành.
                 </p>
 
-                <div className="pt-2 flex flex-wrap items-center gap-4">
+                <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
                   <Link
                     to="/chuyen-khoa"
                     className="inline-flex items-center justify-center h-12 px-7 rounded-xl bg-gradient-to-r from-primary-container to-secondary text-on-primary font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition-all group gap-2"
@@ -1454,14 +1487,14 @@
                     className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold text-xs hover:bg-secondary-fixed-dim transition-all shadow-md"
                   >
                     <span className="material-symbols-outlined text-base text-secondary animate-pulse">near_me</span>
-                    <span>GPS Định Vị Y Tá Dijkstra/A*</span>
+                    <span>GPS Định Vị Y Tá & Bác Sĩ</span>
                   </Link>
                 </div>
               </div>
 
               {/* Metrics Live Badges */}
-              <div className="pt-12">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 max-w-4xl p-5 rounded-2xl bg-tertiary/85 backdrop-blur-xl border border-white/10 shadow-2xl">
+              <div className="pt-12 w-full flex justify-center">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 max-w-4xl w-full p-5 rounded-2xl bg-tertiary/85 backdrop-blur-xl border border-white/10 shadow-2xl text-left">
                   <div className="flex items-center gap-4 px-2">
                     <div className="w-12 h-12 rounded-xl bg-primary-container/60 flex items-center justify-center text-secondary-fixed shadow-inner">
                       <span className="material-symbols-outlined text-2xl">verified_user</span>
@@ -1501,13 +1534,13 @@
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-12">
               <div className="p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-md space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant/30 pb-4">
-                  <div>
-                    <div className="inline-flex items-center gap-2 mb-1.5">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-2 mb-1">
                       <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse" />
                       <span className="text-xs font-bold uppercase text-secondary tracking-wider">Đội Ngũ Y Khoa Thường Trực GoCare</span>
                     </div>
                     <h3 className="font-serif text-2xl sm:text-3xl font-bold text-primary">Hội Đồng Bác Sĩ & Điều Dưỡng Chuyên Sâu</h3>
-                    <p className="text-sm text-on-surface-variant mt-1">Các chuyên gia Lão khoa, Tim mạch hàng đầu từ Bệnh viện Chợ Rẫy, Đại học Y Dược và Chuyên gia Phục hồi chức năng JCI.</p>
+                    <p className="text-sm text-on-surface-variant">Các chuyên gia Lão khoa, Tim mạch hàng đầu từ Bệnh viện Chợ Rẫy, Đại học Y Dược và Chuyên gia Phục hồi chức năng JCI.</p>
                   </div>
                   <Link
                     to="/chuyen-khoa"
@@ -1561,13 +1594,13 @@
                   <div className="gold-glow-card flex items-center gap-4 p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30">
                     <img
                       src="./assets/images/doctor_thao.jpg"
-                      alt="ThS. BS Nguyễn Trung Thành"
+                      alt="ThS. BS Trịnh Phương Thảo"
                       className="w-16 h-16 rounded-2xl object-cover shadow-sm ring-2 ring-gold-accent shrink-0"
                     />
                     <div>
-                      <div className="font-bold text-sm text-on-surface">ThS. BS Nguyễn Trung Thành</div>
+                      <div className="font-bold text-sm text-on-surface">ThS. BS Trịnh Phương Thảo</div>
                       <p className="text-xs font-bold text-secondary">Trị Liệu Tâm Lý & Thần Kinh</p>
-                      <p className="text-[11px] text-on-surface-variant">Viện Sức Khỏe Tâm Thần TP.HCM</p>
+                      <p className="text-[11px] text-on-surface-variant">12 năm BV Đại Học Y Dược</p>
                     </div>
                   </div>
                 </div>
@@ -2023,11 +2056,11 @@
           img: './assets/images/doctor_hong_hung.jpg'
         },
         {
-          id: 'thanh',
-          name: 'ThS. BS Nguyễn Trung Thành',
-          role: 'Bác Sĩ Trị Liệu Tâm Lý & Sức Khỏe Tinh Thần',
-          hosp: 'Viện Sức Khỏe Tâm Thần TP.HCM & Giảng viên ĐH Y Dược',
-          desc: 'Liệu pháp nhận thức hành vi (CBT), giải tỏa trầm cảm người già sau mất người thân, hội chứng sợ cô đơn và lo âu mạn tính.',
+          id: 'thao',
+          name: 'ThS. BS Trịnh Phương Thảo',
+          role: 'Trưởng Đơn Vị Trị Liệu Tâm Lý & Sức Khỏe Tinh Thần',
+          hosp: 'Khoa Tâm Thần Kinh - BV Đại Học Y Dược TP.HCM (12 năm lâm sàng)',
+          desc: 'Liệu pháp nhận thức hành vi (CBT), chăm sóc tâm lý chuyên sâu cho người cao tuổi, giải tỏa trầm cảm, rối loạn giấc ngủ và hội chứng sợ cô đơn.',
           cchn: '007321/SYT-HCM-CCHN',
           price: '600.000₫ / phiên',
           category: 'psychiatry',
@@ -2045,8 +2078,8 @@
         honghung: [
           { author: 'Bác Lê Văn Thạnh (71 tuổi)', comment: 'Bác sĩ Hưng can thiệp kiểm soát cơn tăng huyết áp khẩn cấp cho tôi rất chuẩn xác, dặn dò chu đáo từng loại thuốc.' }
         ],
-        thanh: [
-          { author: 'Bác Hoàng Minh (70 tuổi)', comment: 'Bác sĩ Thành lắng nghe chân thành, giúp tôi vượt qua cảm giác bồn chồn mất ngủ kéo dài.' }
+        thao: [
+          { author: 'Bác Hoàng Minh (70 tuổi)', comment: 'Bác sĩ Thảo lắng nghe chân thành, giúp tôi vượt qua cảm giác bồn chồn mất ngủ kéo dài.' }
         ]
       };
 
@@ -2075,7 +2108,7 @@
           <section className="w-full py-10 bg-gradient-to-b from-surface via-surface-container-low/50 to-surface">
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-6">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-outline-variant/30">
-                <div className="max-w-3xl space-y-3 text-center lg:text-left">
+                <div className="max-w-3xl space-y-3 text-center mx-auto lg:text-left lg:mx-0">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-fixed/50 text-secondary text-xs font-bold uppercase tracking-wider">
                     <span className="material-symbols-outlined text-sm">verified</span>
                     <span>Hội Đồng Y Khoa Quốc Tế Tại Việt Nam</span>
@@ -2429,8 +2462,17 @@
       const [routeResult, setRouteResult] = useState(null);
       const [gpsStatus, setGpsStatus] = useState('Chưa lấy toạ độ');
       const [userCoords, setUserCoords] = useState([10.8035, 106.7328]); // Default Thảo Điền
+      const [customerAddress, setCustomerAddress] = useState('12 Đường Mai Chí Thọ, An Phú, TP. Thủ Đức, TP.HCM');
+      const [nearestDoctorInfo, setNearestDoctorInfo] = useState({
+        doctorName: 'BS.CKI Trần Trọng Khang',
+        spec: 'Phục hồi chức năng Thần kinh & Đột quỵ',
+        dist: '0.8',
+        timeEst: 5,
+        address: 'Nguyễn Văn Hưởng, Thảo Điền, TP. Thủ Đức',
+        phone: '0912 456 789'
+      });
 
-      // Network graph nodes in HCMC
+      // Network graph nodes in HCMC (Bao gồm Cơ sở GoCare, BV Tuyến Đầu & Nhà Riêng Bác Sĩ)
       const nodesData = {
         user: { id: 'user', name: 'Vị trí của bạn (Thảo Điền)', lat: 10.8035, lng: 106.7328, type: 'user' },
         tram_thaodien: { id: 'tram_thaodien', name: 'Trạm Điều Dưỡng Thảo Điền', lat: 10.8035, lng: 106.7328, type: 'station' },
@@ -2441,19 +2483,71 @@
         gocare_bachdang: { id: 'gocare_bachdang', name: 'GoCare Premier Bến Bạch Đằng (Q.1)', lat: 10.7725, lng: 106.7065, type: 'hospital' },
         bv_choray: { id: 'bv_choray', name: 'Bệnh Viện Chợ Rẫy (Q.5)', lat: 10.7554, lng: 106.6601, type: 'hospital' },
         bv_ydtp: { id: 'bv_ydtp', name: 'BV Đại Học Y Dược TP.HCM', lat: 10.7568, lng: 106.6642, type: 'hospital' },
-        vongxoay_dantoc: { id: 'vongxoay_dantoc', name: 'Nút Giao Dân Chủ - 3/2', lat: 10.7752, lng: 106.6785, type: 'junction' }
+        vongxoay_dantoc: { id: 'vongxoay_dantoc', name: 'Nút Giao Dân Chủ - 3/2', lat: 10.7752, lng: 106.6785, type: 'junction' },
+        // Nhà riêng & Phòng khám bác sĩ chuyên khoa (Giả lập vị trí thực tế)
+        bs_vinh_home: {
+          id: 'bs_vinh_home',
+          name: 'Nhà riêng & Phòng mạch PGS.TS Nguyễn Văn Vinh',
+          doctorName: 'PGS.TS Nguyễn Văn Vinh',
+          spec: 'Lão khoa & Tim mạch (BV Chợ Rẫy)',
+          phone: '0903 821 999',
+          address: 'Khu Biệt thự Saroma Villa, Đô thị Sala, TP. Thủ Đức',
+          lat: 10.7705,
+          lng: 106.7245,
+          type: 'doctor_home'
+        },
+        bs_khang_home: {
+          id: 'bs_khang_home',
+          name: 'Nhà riêng & Phòng khám BS.CKI Trần Trọng Khang',
+          doctorName: 'BS.CKI Trần Trọng Khang',
+          spec: 'Phục hồi chức năng Thần kinh & Đột quỵ (BV ĐH Y Dược)',
+          phone: '0912 456 789',
+          address: 'Đường Nguyễn Văn Hưởng, Thảo Điền, TP. Thủ Đức',
+          lat: 10.8062,
+          lng: 106.7350,
+          type: 'doctor_home'
+        },
+        bs_thao_home: {
+          id: 'bs_thao_home',
+          name: 'Nhà riêng & Phòng khám ThS.BS Trịnh Phương Thảo',
+          doctorName: 'ThS.BS Trịnh Phương Thảo',
+          spec: 'Trị liệu Tâm lý & Sức khỏe Tinh thần (Khoa Tâm thần ĐH Y Dược)',
+          phone: '0908 112 233',
+          address: 'Đinh Tiên Hoàng, Phường Đa Kao, Quận 1',
+          lat: 10.7890,
+          lng: 106.6980,
+          type: 'doctor_home'
+        },
+        bs_honghung_home: {
+          id: 'bs_honghung_home',
+          name: 'Nhà riêng & Phòng khám BS.CKI Nguyễn Hồng Hưng',
+          doctorName: 'BS.CKI Nguyễn Hồng Hưng',
+          spec: 'Tim mạch Can thiệp & Cấp cứu Lão khoa',
+          phone: '0938 776 655',
+          address: 'Nguyễn Hữu Cảnh, Phường 22, Q. Bình Thạnh',
+          lat: 10.8010,
+          lng: 106.7120,
+          type: 'doctor_home'
+        }
       };
 
-      // Edges with realistic distances in km
+      // Edges with realistic distances in km kết nối mạng lưới giao thông & nhà riêng bác sĩ
       const graphEdges = [
         { from: 'user', to: 'tram_thaodien', dist: 0.1 },
+        { from: 'user', to: 'bs_khang_home', dist: 0.8 },
+        { from: 'tram_thaodien', to: 'bs_khang_home', dist: 0.6 },
         { from: 'tram_thaodien', to: 'cau_saigon', dist: 1.8 },
         { from: 'tram_thaodien', to: 'nga3_catlai', dist: 2.2 },
+        { from: 'cau_saigon', to: 'bs_honghung_home', dist: 1.1 },
+        { from: 'bs_honghung_home', to: 'cau_bason', dist: 2.0 },
         { from: 'cau_saigon', to: 'cau_bason', dist: 2.6 },
         { from: 'cau_saigon', to: 'gocare_sala', dist: 3.4 },
         { from: 'nga3_catlai', to: 'gocare_sala', dist: 3.1 },
+        { from: 'cau_bason', to: 'bs_thao_home', dist: 1.5 },
+        { from: 'gocare_bachdang', to: 'bs_thao_home', dist: 1.8 },
         { from: 'cau_bason', to: 'gocare_bachdang', dist: 1.2 },
         { from: 'cau_bason', to: 'gocare_sala', dist: 1.9 },
+        { from: 'gocare_sala', to: 'bs_vinh_home', dist: 0.5 },
         { from: 'gocare_bachdang', to: 'vongxoay_dantoc', dist: 3.2 },
         { from: 'gocare_sala', to: 'gocare_bachdang', dist: 2.4 },
         { from: 'vongxoay_dantoc', to: 'bv_ydtp', dist: 2.1 },
@@ -2654,6 +2748,9 @@
           } else if (node.type === 'station') {
             markerColor = '#C5A059';
             iconName = 'medical_services';
+          } else if (node.type === 'doctor_home') {
+            markerColor = '#059669'; // Emerald Green cho Nhà Riêng & Phòng Khám Bác Sĩ
+            iconName = 'home_health';
           } else {
             markerColor = '#83746f';
             iconName = 'trip_origin';
@@ -2671,14 +2768,109 @@
           });
 
           const marker = L.marker([node.lat, node.lng], { icon: customIcon });
-          marker.bindPopup(`
-            <div style="font-family: 'Inter', sans-serif; font-size: 12px;">
-              <strong style="color: #482816;">${node.name}</strong><br/>
-              <span style="color: #83746f;">Tọa độ: ${node.lat.toFixed(4)}, ${node.lng.toFixed(4)}</span>
+          let popupContent = `
+            <div style="font-family: 'Inter', sans-serif; font-size: 12px; min-width: 200px;">
+              <strong style="color: #482816; font-size: 13px;">${node.name}</strong><br/>
+          `;
+          if (node.doctorName) {
+            popupContent += `
+              <div style="margin-top: 4px; padding-top: 4px; border-top: 1px dashed #ccc;">
+                <span style="color: #059669; font-weight: bold; display: block;">👨‍⚕️ ${node.doctorName}</span>
+                <span style="color: #333; font-size: 11px;">Chuyên khoa: <strong>${node.spec}</strong></span><br/>
+                <span style="color: #666; font-size: 11px;">Địa chỉ: ${node.address}</span><br/>
+                <span style="color: #a04100; font-size: 11px; font-weight: bold;">Hotline khẩn: ${node.phone}</span>
+              </div>
+            `;
+          }
+          popupContent += `
+              <span style="color: #83746f; font-size: 10px; display: block; margin-top: 4px;">Tọa độ: ${node.lat.toFixed(4)}, ${node.lng.toFixed(4)}</span>
             </div>
-          `);
+          `;
+          marker.bindPopup(popupContent);
           markersLayerRef.current.addLayer(marker);
         });
+      };
+
+      // Search customer custom address and find nearest doctor / center
+      const handleSearchAddress = (addrOverride) => {
+        const query = (addrOverride || customerAddress).trim();
+        if (!query) {
+          alert('Vui lòng nhập địa chỉ của bạn để tìm kiếm!');
+          return;
+        }
+
+        const q = query.toLowerCase();
+        let targetLat = 10.8035;
+        let targetLng = 106.7328;
+
+        if (q.includes('quận 1') || q.includes('q1') || q.includes('bến nghé') || q.includes('đa kao') || q.includes('hai bà trưng') || q.includes('lê duẩn')) {
+          targetLat = 10.7820; targetLng = 106.7010;
+        } else if (q.includes('sala') || q.includes('thủ thiêm') || q.includes('mai chí thọ') || q.includes('an lợi đông')) {
+          targetLat = 10.7690; targetLng = 106.7230;
+        } else if (q.includes('bình thạnh') || q.includes('hàng xanh') || q.includes('nguyễn hữu cảnh') || q.includes('điện biên phủ')) {
+          targetLat = 10.8015; targetLng = 106.7125;
+        } else if (q.includes('quận 5') || q.includes('q5') || q.includes('chợ rẫy') || q.includes('hồng bàng') || q.includes('nguyễn trãi')) {
+          targetLat = 10.7554; targetLng = 106.6601;
+        } else if (q.includes('quận 3') || q.includes('q3') || q.includes('dân chủ') || q.includes('nam kỳ khởi nghĩa')) {
+          targetLat = 10.7765; targetLng = 106.6800;
+        } else if (q.includes('thảo điền') || q.includes('quận 2') || q.includes('an phú') || q.includes('xa lộ hà nội')) {
+          targetLat = 10.8050; targetLng = 106.7340;
+        } else {
+          // Approximate with smooth deterministic hash
+          let hash = 0;
+          for (let i = 0; i < query.length; i++) hash = (hash + query.charCodeAt(i)) % 80;
+          targetLat = 10.7650 + (hash / 1200);
+          targetLng = 106.6950 + (hash / 1200);
+        }
+
+        setUserCoords([targetLat, targetLng]);
+        nodesData.user.lat = targetLat;
+        nodesData.user.lng = targetLng;
+        nodesData.user.name = `Địa chỉ của bạn: ${query}`;
+        setGpsStatus(`Đã định vị: ${query}`);
+
+        // Find closest doctor residence
+        let closestDoc = null;
+        let minDocDist = Infinity;
+        let closestFac = null;
+        let minFacDist = Infinity;
+
+        Object.values(nodesData).forEach((n) => {
+          if (n.id === 'user' || n.type === 'junction') return;
+          const d = haversineDist({ lat: targetLat, lng: targetLng }, n);
+          if (n.type === 'doctor_home' && d < minDocDist) {
+            minDocDist = d;
+            closestDoc = n;
+          }
+          if ((n.type === 'hospital' || n.type === 'station') && d < minFacDist) {
+            minFacDist = d;
+            closestFac = n;
+          }
+        });
+
+        if (closestDoc) {
+          setNearestDoctorInfo({
+            doctorName: closestDoc.doctorName,
+            spec: closestDoc.spec,
+            dist: minDocDist.toFixed(1),
+            timeEst: Math.round((minDocDist / 30) * 60) + 3,
+            address: closestDoc.address,
+            phone: closestDoc.phone,
+            facilityName: closestFac ? closestFac.name : 'GoCare Heritage Villa (Sala)',
+            facilityDist: minFacDist ? minFacDist.toFixed(1) : '2.1'
+          });
+          setSelectedOrigin('user');
+          setSelectedDestination(closestDoc.id);
+        }
+
+        renderMapMarkers();
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.setView([targetLat, targetLng], 14);
+        }
+
+        setTimeout(() => {
+          handleFindShortestPath();
+        }, 300);
       };
 
       // Execute Pathfinding Algorithm
@@ -2740,14 +2932,12 @@
             nodesData.user.lng = longitude;
             nodesData.user.name = `Vị trí thực tế của bạn (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
             setGpsStatus(`Đã cập nhật: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-            renderMapMarkers();
-            if (mapInstanceRef.current) {
-              mapInstanceRef.current.setView([latitude, longitude], 14);
-            }
+            setCustomerAddress(`Tọa độ GPS: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+            handleSearchAddress(`Tọa độ GPS: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
           },
           (err) => {
             setGpsStatus('Không truy cập được GPS (đang dùng mô phỏng Thảo Điền)');
-            alert('Không thể lấy vị trí thực tế, hệ thống sẽ sử dụng vị trí cơ sở Thảo Điền TP. Thủ Đức!');
+            alert('Không thể lấy vị trí thực tế, hệ thống sẽ sử dụng vị trí Thảo Điền TP. Thủ Đức!');
           }
         );
       };
@@ -2802,47 +2992,368 @@
 
       return (
         <div className="w-full pt-20 bg-surface">
-          {/* Header Banner - Căn Giữa Các Góc */}
-          <section className="w-full py-10 bg-surface-container-low/70">
-            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-6">
-              <div className="text-center max-w-3xl mx-auto space-y-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-light text-primary text-xs font-bold uppercase tracking-wider border border-gold-accent/40">
-                  <span className="material-symbols-outlined text-sm text-gold-accent">verified</span>
-                  <span>Thẩm Định Độc Lập 4 Bước • Bộ Y Tế</span>
-                </span>
-                <h1 className="font-serif text-3xl sm:text-4xl text-primary font-bold">
-                  Đội Ngũ Điều Dưỡng CCHN & Hệ Thống GPS Tìm Tuyến Đường Ngắn Nhất
-                </h1>
-                <p className="text-sm text-on-surface-variant leading-relaxed">
-                  100% nhân sự y tế sở hữu Chứng chỉ hành nghề độc lập do Bộ Y Tế & Sở Y Tế cấp. Tích hợp thuật toán toán học <strong>Dijkstra</strong> và <strong>A* (A-Star)</strong> tối ưu quãng đường cứu hộ và điều phối y tá đến nhà nhanh nhất.
-                </p>
+          {/* Header Banner - Căn Giữa Hoàn Chỉnh */}
+          <section className="w-full py-10 bg-surface-container-low/70 border-b border-outline-variant/30">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-4 text-center">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold-light text-primary text-xs font-bold uppercase tracking-wider border border-gold-accent/40 mx-auto">
+                <span className="material-symbols-outlined text-sm text-gold-accent">verified</span>
+                <span>Hệ Thống Y Tế Thương Mại GoCare 5 Sao • Chuẩn JCI Quốc Tế</span>
+              </span>
+              <h1 className="font-serif text-3xl sm:text-4xl text-primary font-bold max-w-4xl mx-auto">
+                Định Vị GPS Tìm Cơ Sở Y Tế & Bác Sĩ Gần Bạn Nhất
+              </h1>
+              <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed max-w-3xl mx-auto">
+                Nhập địa chỉ của bạn để hệ thống tự động tìm kiếm phòng khám, nhà riêng của bác sĩ chuyên khoa và điều dưỡng viên gần nhất. Tích hợp giải thuật tìm đường tối ưu <strong>Dijkstra</strong> và <strong>A* (A-Star)</strong> hỗ trợ cấp cứu và chăm sóc tại gia nhanh nhất.
+              </p>
+            </div>
+          </section>
+
+          {/* REAL INTERACTIVE GPS MAP & NEAREST DOCTOR LOCATOR (ĐƯỢC ĐƯA LÊN ĐẦU THEO YÊU CẦU) */}
+          <section className="w-full py-12 bg-surface">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-8">
+              
+              {/* Customer Address Input Bar (Hệ thống tìm kiếm theo địa chỉ khách hàng) */}
+              <div className="bg-gradient-to-r from-primary to-primary-container p-6 sm:p-8 rounded-3xl text-on-primary shadow-xl space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-gold-accent flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                      Định Vị Điểm Đến Khẩn Cấp & Bác Sĩ Phụ Trách
+                    </span>
+                    <h2 className="font-serif text-2xl font-bold text-white mt-1">
+                      Nhập Địa Chỉ Của Bạn Để Tìm Bác Sĩ & Cơ Sở Gần Nhất
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleGetLiveGPS}
+                    className="px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-bold flex items-center gap-2 border border-white/20 transition-all self-start sm:self-auto shrink-0"
+                  >
+                    <span className="material-symbols-outlined text-sm text-gold-accent">my_location</span>
+                    <span>Lấy Tọa Độ GPS Của Tôi</span>
+                  </button>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <div className="relative flex-1">
+                    <span className="material-symbols-outlined absolute left-3.5 top-3.5 text-secondary text-lg">
+                      search
+                    </span>
+                    <input
+                      type="text"
+                      value={customerAddress}
+                      onChange={(e) => setCustomerAddress(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === 'Enter') handleSearchAddress(); }}
+                      placeholder="Nhập số nhà, tên đường, phường/quận (VD: Mai Chí Thọ Sala; Thảo Điền; Hai Bà Trưng Q1; Nguyễn Hữu Cảnh...)"
+                      className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white text-gray-900 text-xs sm:text-sm font-medium placeholder-gray-500 shadow-inner focus:outline-none focus:ring-2 focus:ring-gold-accent"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleSearchAddress()}
+                    className="px-6 py-3 rounded-2xl bg-secondary hover:bg-secondary/90 text-on-secondary font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 shrink-0"
+                  >
+                    <span className="material-symbols-outlined text-sm">explore</span>
+                    <span>Tìm Điểm Gần Nhất</span>
+                  </button>
+                </div>
+
+                {/* Quick district chips */}
+                <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-white/80">
+                  <span className="text-[11px] font-bold text-gold-accent">Gợi ý nhanh:</span>
+                  {[
+                    { label: 'Khu Sala Thủ Đức', q: 'Khu đô thị Sala, TP. Thủ Đức' },
+                    { label: 'Thảo Điền', q: 'Đường Nguyễn Văn Hưởng, Thảo Điền, TP. Thủ Đức' },
+                    { label: 'Quận 1 - Đa Kao', q: 'Đinh Tiên Hoàng, Đa Kao, Quận 1' },
+                    { label: 'Bình Thạnh', q: 'Nguyễn Hữu Cảnh, Quận Bình Thạnh' },
+                    { label: 'Quận 5 - BV Chợ Rẫy', q: 'Nguyễn Chí Thanh, Quận 5' }
+                  ].map((chip, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => {
+                        setCustomerAddress(chip.q);
+                        handleSearchAddress(chip.q);
+                      }}
+                      className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] font-medium border border-white/15 transition-all"
+                    >
+                      {chip.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Quick Filters - Căn Giữa */}
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                {[
-                  { id: 'all', label: 'Tất cả chuyên môn' },
-                  { id: 'elderly', label: 'Chăm sóc Người cao tuổi' },
-                  { id: 'mother_baby', label: 'Mẹ & Bé sơ sinh' },
-                  { id: 'wound_sonde', label: 'Thay băng cắt chỉ & Sonde' }
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setSpecialty(item.id)}
-                    className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                      specialty === item.id ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container text-on-surface hover:bg-gold-light'
-                    }`}
+              {/* Nearest Doctor & Center Highlight Card */}
+              {nearestDoctorInfo && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-3xl bg-surface-container-lowest border border-gold-accent/40 shadow-md">
+                  <div className="flex items-start gap-4 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <span className="material-symbols-outlined text-2xl">stethoscope</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">
+                          Bác Sĩ Gần Bạn Nhất
+                        </span>
+                        <span className="text-xs font-bold text-emerald-800">
+                          Cách {nearestDoctorInfo.dist} km (~{nearestDoctorInfo.timeEst} phút)
+                        </span>
+                      </div>
+                      <h3 className="font-serif font-bold text-sm text-primary">
+                        {nearestDoctorInfo.doctorName}
+                      </h3>
+                      <p className="text-xs text-on-surface-variant font-medium">
+                        {nearestDoctorInfo.spec}
+                      </p>
+                      <p className="text-[11px] text-outline">
+                        📍 {nearestDoctorInfo.address}
+                      </p>
+                      <div className="pt-1 text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm text-secondary">phone_in_talk</span>
+                        <span>Hotline khẩn: {nearestDoctorInfo.phone}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 justify-between">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <span className="material-symbols-outlined text-2xl">domain</span>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">
+                            Cơ Sở Trọng Điểm GoCare
+                          </span>
+                          <span className="text-xs font-bold text-primary">
+                            Cách {nearestDoctorInfo.facilityDist || '1.8'} km
+                          </span>
+                        </div>
+                        <h3 className="font-serif font-bold text-sm text-primary">
+                          {nearestDoctorInfo.facilityName || 'GoCare Heritage Villa (Sala Thủ Đức)'}
+                        </h3>
+                        <p className="text-xs text-on-surface-variant font-medium">
+                          Trung tâm điều dưỡng & Cấp cứu hồi sức 24/7
+                        </p>
+                        <p className="text-[11px] text-outline">
+                          Trang bị 04 xe cứu thương ICU chuyên dụng & đội y tá cơ động
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleFindShortestPath}
+                      className="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold shrink-0 self-center shadow-sm"
+                    >
+                      Chỉ Đường
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* GPS Algorithm Control Panel */}
+              <div className="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-md space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Origin */}
+                  <div>
+                    <label className="block text-xs font-bold text-primary mb-1.5">1. Điểm Xuất Phát (Origin):</label>
+                    <select
+                      value={selectedOrigin}
+                      onChange={(e) => setSelectedOrigin(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
+                    >
+                      <option value="user">📍 Vị trí của bạn ({gpsStatus})</option>
+                      <option value="tram_thaodien">🏥 Trạm Điều Dưỡng Thảo Điền</option>
+                      <option value="gocare_sala">🏢 GoCare Sala Thủ Đức</option>
+                      <option value="gocare_bachdang">🏬 GoCare Bến Bạch Đằng (Q.1)</option>
+                      <option value="bv_choray">🏥 Bệnh Viện Chợ Rẫy (Q.5)</option>
+                    </select>
+                  </div>
+
+                  {/* Destination */}
+                  <div>
+                    <label className="block text-xs font-bold text-primary mb-1.5">2. Điểm Đến Y Tế / Bác Sĩ:</label>
+                    <select
+                      value={selectedDestination}
+                      onChange={(e) => setSelectedDestination(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
+                    >
+                      <optgroup label="👨‍⚕️ Nhà Riêng & Phòng Khám Bác Sĩ Gần Nhất">
+                        <option value="bs_khang_home">👨‍⚕️ Nhà riêng BS.CKI Trần Trọng Khang (Thảo Điền)</option>
+                        <option value="bs_vinh_home">👨‍⚕️ Nhà riêng PGS.TS Nguyễn Văn Vinh (Sala)</option>
+                        <option value="bs_thao_home">👩‍⚕️ Nhà riêng ThS.BS Trịnh Phương Thảo (Đa Kao, Q.1)</option>
+                        <option value="bs_honghung_home">👨‍⚕️ Nhà riêng BS.CKI Nguyễn Hồng Hưng (Bình Thạnh)</option>
+                      </optgroup>
+                      <optgroup label="🏢 Cơ Sở GoCare & Bệnh Viện Tuyến Đầu">
+                        <option value="gocare_sala">🏢 GoCare Heritage Villa (Sala Thủ Đức)</option>
+                        <option value="gocare_bachdang">🏬 GoCare Premier Bến Bạch Đằng (Q.1)</option>
+                        <option value="tram_thaodien">🏥 Trạm Điều Dưỡng Thảo Điền</option>
+                        <option value="bv_choray">🏥 Bệnh Viện Chợ Rẫy (Cấp cứu Lão khoa)</option>
+                        <option value="bv_ydtp">🏥 BV Đại Học Y Dược TP.HCM</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
+                  {/* Algorithm Choice */}
+                  <div>
+                    <label className="block text-xs font-bold text-primary mb-1.5">3. Thuật Toán Tìm Tuyến Đường:</label>
+                    <select
+                      value={selectedAlgorithm}
+                      onChange={(e) => setSelectedAlgorithm(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
+                    >
+                      <option value="dijkstra">⚡ Dijkstra (Khoảng cách ngắn nhất tuyệt đối)</option>
+                      <option value="astar">🚀 A* (Tối ưu Heuristic Haversine mặt cầu)</option>
+                    </select>
+                  </div>
+
+                  {/* Action Button */}
+                  <div className="flex items-end">
+                    <button
+                      type="button"
+                      disabled={isRouting}
+                      onClick={handleFindShortestPath}
+                      className="w-full h-10 rounded-xl bg-gradient-to-r from-secondary to-primary-container hover:from-primary hover:to-secondary text-on-secondary font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <span className="material-symbols-outlined text-base">directions</span>
+                      <span>{isRouting ? 'Đang tính toán...' : 'Tìm Đường Đi Ngắn Nhất'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Status bar */}
+                <div className="pt-2 border-t border-outline-variant/20 flex flex-wrap items-center justify-between text-xs text-outline gap-2">
+                  <span>Trạng thái định vị: <strong className="text-primary">{gpsStatus}</strong></span>
+                  <span className="flex items-center gap-1 text-emerald-700 font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    Mạng lưới 14 điểm gồm Cơ sở GoCare, Nhà riêng Bác sĩ & BV Chợ Rẫy/ĐH Y Dược
+                  </span>
+                </div>
+              </div>
+
+              {/* Map Canvas and Stats side-by-side */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Leaflet Map Box */}
+                <div className="lg:col-span-8 rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xl bg-brand-charcoal h-[500px] relative">
+                  <div ref={mapContainerRef} className="w-full h-full z-10" />
+                  
+                  {/* Floating Legend on Map */}
+                  <div className="absolute top-4 left-4 z-20 bg-surface/90 backdrop-blur-md p-3 rounded-2xl border border-outline-variant/30 text-[11px] shadow-lg space-y-1.5">
+                    <div className="font-bold text-primary">Chú Giải Bản Đồ:</div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-sky-600 inline-block"></span> Vị trí của bạn (Khách hàng)</div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span> Nhà riêng & Phòng khám Bác sĩ</div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-primary inline-block"></span> Cơ sở y tế GoCare 5 Sao</div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-amber-600 inline-block"></span> Bệnh viện liên kết cấp cứu</div>
+                    <div className="flex items-center gap-2"><span className="w-3 h-1 bg-secondary inline-block"></span> Tuyến đường tối ưu (Dijkstra/A*)</div>
+                  </div>
+                </div>
+
+                {/* Routing Execution Results Card */}
+                <div className="lg:col-span-4 bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-xl flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between border-b pb-3">
+                      <h4 className="font-serif font-bold text-lg text-primary flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-secondary">analytics</span>
+                        <span>Kết Quả Lộ Trình</span>
+                      </h4>
+                      {routeResult && (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                          Đã Tối Ưu
+                        </span>
+                      )}
+                    </div>
+
+                    {routeResult ? (
+                      <div className="space-y-4 text-xs">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30">
+                            <span className="text-[10px] text-outline block">Quãng đường ngắn nhất:</span>
+                            <span className="text-xl font-bold text-secondary font-serif">{routeResult.distance} km</span>
+                          </div>
+                          <div className="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30">
+                            <span className="text-[10px] text-outline block">Thời gian dự kiến:</span>
+                            <span className="text-xl font-bold text-primary font-serif">~{routeResult.timeEst} phút</span>
+                          </div>
+                        </div>
+
+                        <div className="p-3 rounded-2xl bg-gold-light border border-gold-accent/40 space-y-1">
+                          <div className="flex justify-between text-[11px]"><span className="text-outline">Thuật toán:</span><strong className="text-primary">{routeResult.algorithm}</strong></div>
+                          <div className="flex justify-between text-[11px]"><span className="text-outline">Số đỉnh đã duyệt:</span><strong className="text-primary">{routeResult.exploredCount} nút giao</strong></div>
+                          <div className="flex justify-between text-[11px]"><span className="text-outline">Thời gian xử lý:</span><strong className="text-emerald-700">{routeResult.execTime} ms</strong></div>
+                        </div>
+
+                        <div>
+                          <strong className="text-primary block mb-2">Các chặng di chuyển chi tiết:</strong>
+                          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            {routeResult.path.map((nodeId, idx) => (
+                              <div key={idx} className="flex items-center gap-2 text-[11px] text-on-surface">
+                                <span className="w-5 h-5 rounded-full bg-primary-container text-on-primary text-[10px] font-bold flex items-center justify-center shrink-0">
+                                  {idx + 1}
+                                </span>
+                                <span className="truncate">{(nodesData[nodeId] && nodesData[nodeId].name) || nodeId}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="py-12 text-center space-y-3">
+                        <div className="w-14 h-14 rounded-full bg-surface-container text-outline flex items-center justify-center mx-auto">
+                          <span className="material-symbols-outlined text-2xl">route</span>
+                        </div>
+                        <p className="text-xs text-on-surface-variant">
+                          Nhập địa chỉ của bạn hoặc chọn điểm đến, sau đó nhấn <strong>"Tìm Đường Đi Ngắn Nhất"</strong> để chạy thuật toán Dijkstra hoặc A*.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <a
+                    href="tel:19006868"
+                    className="w-full mt-4 py-3 rounded-2xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold text-center block transition-all shadow-md"
                   >
-                    {item.label}
-                  </button>
-                ))}
+                    Gọi Xe Cứu Hộ & Điều Dưỡng Đến Ngay (1900 6868)
+                  </a>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Nurses Grid */}
-          <section className="w-full py-12 bg-surface">
-            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          {/* 2. ĐỘI NGŨ ĐIỀU DƯỠNG CCHN PHỤC VỤ TẠI NHÀ */}
+          <section className="w-full py-14 bg-surface-container-low/70 border-t border-outline-variant/30">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-8">
+              <div className="text-center max-w-3xl mx-auto space-y-2">
+                <span className="text-xs font-bold uppercase text-secondary tracking-wider">
+                  Dịch Vụ Điều Dưỡng Tận Nơi 24/7
+                </span>
+                <h2 className="font-serif text-3xl font-bold text-primary">
+                  Đội Ngũ Điều Dưỡng Viên CCHN Chuẩn Viện
+                </h2>
+                <p className="text-xs sm:text-sm text-on-surface-variant">
+                  Đáp ứng mọi nhu cầu: chăm sóc người cao tuổi, thay băng cắt chỉ, đặt sonde dạ dày, hỗ trợ mẹ & bé sơ sinh theo ca trực linh hoạt.
+                </p>
+
+                {/* Quick Filters */}
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-3">
+                  {[
+                    { id: 'all', label: 'Tất cả chuyên môn' },
+                    { id: 'elderly', label: 'Chăm sóc Người cao tuổi' },
+                    { id: 'mother_baby', label: 'Mẹ & Bé sơ sinh' },
+                    { id: 'wound_sonde', label: 'Thay băng cắt chỉ & Sonde' }
+                  ].map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setSpecialty(item.id)}
+                      className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                        specialty === item.id ? 'bg-primary text-on-primary shadow-sm' : 'bg-surface-container-lowest text-on-surface hover:bg-gold-light border border-outline-variant/40'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {filteredNurses.map((nurse) => (
                   <div key={nurse.id} className="gold-glow-card rounded-2xl bg-surface-container-lowest border border-outline-variant/40 p-6 shadow-sm flex flex-col justify-between">
@@ -2917,189 +3428,6 @@
             </div>
           </section>
 
-          {/* REAL INTERACTIVE GPS MAP WITH DIJKSTRA / A* ALGORITHM */}
-          <section className="w-full py-14 bg-surface-container-low border-t border-outline-variant/30">
-            <div className="max-w-[1400px] mx-auto px-6 lg:px-12 space-y-8">
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div>
-                  <div className="inline-flex items-center gap-2 mb-1">
-                    <span className="w-2.5 h-2.5 rounded-full bg-secondary animate-ping"></span>
-                    <span className="text-xs font-bold uppercase text-secondary tracking-wider">Hệ Thống Điều Phối GPS Thông Minh 24/7</span>
-                  </div>
-                  <h2 className="font-serif text-3xl font-bold text-primary">Bản Đồ GPS Tìm Tuyến Đường Ngắn Nhất (Dijkstra & A*)</h2>
-                  <p className="text-xs text-on-surface-variant mt-1">
-                    Ứng dụng giải thuật tìm đường tối ưu trong mạng lưới giao thông y tế TP.HCM kết nối các cơ sở GoCare và Bệnh viện tuyến Trung ương.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleGetLiveGPS}
-                  className="px-4 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-secondary text-xs font-bold text-primary shadow-sm hover:shadow-md flex items-center gap-2 transition-all"
-                >
-                  <span className="material-symbols-outlined text-base text-secondary animate-bounce">my_location</span>
-                  <span>Lấy Vị Trí GPS Của Tôi</span>
-                </button>
-              </div>
-
-              {/* GPS Algorithm Control Panel */}
-              <div className="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-md space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Origin */}
-                  <div>
-                    <label className="block text-xs font-bold text-primary mb-1.5">1. Điểm Xuất Phát (Origin):</label>
-                    <select
-                      value={selectedOrigin}
-                      onChange={(e) => setSelectedOrigin(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
-                    >
-                      <option value="user">📍 Vị trí của bạn ({gpsStatus})</option>
-                      <option value="tram_thaodien">🏥 Trạm Điều Dưỡng Thảo Điền</option>
-                      <option value="gocare_sala">🏢 GoCare Sala Thủ Đức</option>
-                      <option value="gocare_bachdang">🏬 GoCare Bến Bạch Đằng (Q.1)</option>
-                      <option value="bv_choray">🏥 Bệnh Viện Chợ Rẫy (Q.5)</option>
-                    </select>
-                  </div>
-
-                  {/* Destination */}
-                  <div>
-                    <label className="block text-xs font-bold text-primary mb-1.5">2. Điểm Đến Y Tế (Destination):</label>
-                    <select
-                      value={selectedDestination}
-                      onChange={(e) => setSelectedDestination(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
-                    >
-                      <option value="gocare_sala">🏢 GoCare Heritage Villa (Sala)</option>
-                      <option value="gocare_bachdang">🏬 GoCare Premier Bến Bạch Đằng</option>
-                      <option value="bv_choray">🏥 BV Chợ Rẫy (Cấp cứu Lão khoa)</option>
-                      <option value="bv_ydtp">🏥 BV Đại Học Y Dược TP.HCM</option>
-                      <option value="tram_thaodien">🏥 Trạm Điều Dưỡng Thảo Điền</option>
-                    </select>
-                  </div>
-
-                  {/* Algorithm Choice */}
-                  <div>
-                    <label className="block text-xs font-bold text-primary mb-1.5">3. Thuật Toán Tìm Tuyến Đường:</label>
-                    <select
-                      value={selectedAlgorithm}
-                      onChange={(e) => setSelectedAlgorithm(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-low text-xs font-semibold"
-                    >
-                      <option value="dijkstra">⚡ Dijkstra (Trọng số khoảng cách nhỏ nhất)</option>
-                      <option value="astar">🚀 A* (Heuristic khoảng cách mặt cầu Haversine)</option>
-                    </select>
-                  </div>
-
-                  {/* Action Button */}
-                  <div className="flex items-end">
-                    <button
-                      type="button"
-                      disabled={isRouting}
-                      onClick={handleFindShortestPath}
-                      className="w-full h-10 rounded-xl bg-gradient-to-r from-secondary to-primary-container hover:from-primary hover:to-secondary text-on-secondary font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <span className="material-symbols-outlined text-base">directions</span>
-                      <span>{isRouting ? 'Đang tính toán...' : 'Tìm Đường Đi Ngắn Nhất'}</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Status bar */}
-                <div className="pt-2 border-t border-outline-variant/20 flex flex-wrap items-center justify-between text-xs text-outline gap-2">
-                  <span>Trạng thái GPS: <strong className="text-primary">{gpsStatus}</strong></span>
-                  <span className="flex items-center gap-1 text-emerald-700 font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    Mạng lưới gồm 10 nút giao & cơ sở y tế trọng điểm
-                  </span>
-                </div>
-              </div>
-
-              {/* Map Canvas and Stats side-by-side */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Leaflet Map Box */}
-                <div className="lg:col-span-8 rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xl bg-brand-charcoal h-[480px] relative">
-                  <div ref={mapContainerRef} className="w-full h-full z-10" />
-                  
-                  {/* Floating Legend on Map */}
-                  <div className="absolute top-4 left-4 z-20 bg-surface/90 backdrop-blur-md p-3 rounded-2xl border border-outline-variant/30 text-[11px] shadow-lg space-y-1.5">
-                    <div className="font-bold text-primary">Chú Giải Bản Đồ:</div>
-                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-sky-600 inline-block"></span> Vị trí của bạn / Điểm xuất phát</div>
-                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-primary inline-block"></span> Cơ sở y tế GoCare 5 Sao</div>
-                    <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-amber-600 inline-block"></span> Bệnh viện liên kết cấp cứu</div>
-                    <div className="flex items-center gap-2"><span className="w-3 h-1 bg-secondary inline-block"></span> Tuyến đường tối ưu (Polyline)</div>
-                  </div>
-                </div>
-
-                {/* Routing Execution Results Card */}
-                <div className="lg:col-span-4 bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/40 shadow-xl flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between border-b pb-3">
-                      <h4 className="font-serif font-bold text-lg text-primary flex items-center gap-1.5">
-                        <span className="material-symbols-outlined text-secondary">analytics</span>
-                        <span>Kết Quả Tối Ưu</span>
-                      </h4>
-                      {routeResult && (
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
-                          Đã Tối Ưu
-                        </span>
-                      )}
-                    </div>
-
-                    {routeResult ? (
-                      <div className="space-y-4 text-xs">
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30">
-                            <span className="text-[10px] text-outline block">Quãng đường ngắn nhất:</span>
-                            <span className="text-xl font-bold text-secondary font-serif">{routeResult.distance} km</span>
-                          </div>
-                          <div className="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30">
-                            <span className="text-[10px] text-outline block">Thời gian ước tính:</span>
-                            <span className="text-xl font-bold text-primary font-serif">~{routeResult.timeEst} phút</span>
-                          </div>
-                        </div>
-
-                        <div className="p-3 rounded-2xl bg-gold-light border border-gold-accent/40 space-y-1">
-                          <div className="flex justify-between text-[11px]"><span className="text-outline">Thuật toán:</span><strong className="text-primary">{routeResult.algorithm}</strong></div>
-                          <div className="flex justify-between text-[11px]"><span className="text-outline">Số đỉnh đã duyệt:</span><strong className="text-primary">{routeResult.exploredCount} nút</strong></div>
-                          <div className="flex justify-between text-[11px]"><span className="text-outline">Thời gian xử lý:</span><strong className="text-emerald-700">{routeResult.execTime} ms</strong></div>
-                        </div>
-
-                        <div>
-                          <strong className="text-primary block mb-2">Lộ trình di chuyển chi tiết:</strong>
-                          <div className="space-y-2 max-h-44 overflow-y-auto pr-1">
-                            {routeResult.path.map((nodeId, idx) => (
-                              <div key={idx} className="flex items-center gap-2 text-[11px] text-on-surface">
-                                <span className="w-5 h-5 rounded-full bg-primary-container text-on-primary text-[10px] font-bold flex items-center justify-center shrink-0">
-                                  {idx + 1}
-                                </span>
-                                <span className="truncate">{(nodesData[nodeId] && nodesData[nodeId].name) || nodeId}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="py-12 text-center space-y-3">
-                        <div className="w-14 h-14 rounded-full bg-surface-container text-outline flex items-center justify-center mx-auto">
-                          <span className="material-symbols-outlined text-2xl">route</span>
-                        </div>
-                        <p className="text-xs text-on-surface-variant">
-                          Hãy chọn điểm xuất phát và điểm đến, sau đó nhấn <strong>"Tìm Đường Đi Ngắn Nhất"</strong> để chạy thuật toán Dijkstra hoặc A*.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  <a
-                    href="tel:19006868"
-                    className="w-full mt-4 py-3 rounded-2xl bg-primary hover:bg-primary-container text-on-primary text-xs font-bold text-center block transition-all shadow-md"
-                  >
-                    Gọi Xe Cứu Hộ & Điều Dưỡng Đến Ngay (1900 6868)
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* Booking Shift Modal */}
           {isBookingOpen && (
@@ -5652,7 +5980,6 @@
           </main>
           <Footer />
           <PsychologicalCounselingBox />
-          <StitchHub />
 
           {/* Real Authentication Modal */}
           <AuthModal
